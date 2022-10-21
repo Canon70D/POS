@@ -1,4 +1,5 @@
 const express = require("express");
+const db = require("./config/connections");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -23,10 +24,10 @@ app.get("/", (req, res) => {
   res.send("pos server");
 });
 
-// db.once("open", () => {
-//   app.listen(PORT, () => console.log(`Now listening on localhost: ${PORT}`));
-// });
-
-app.listen(PORT, () => {
-  console.log(`server listening on ${PORT}`);
+db.once("open", () => {
+  app.listen(PORT, () => console.log(`Now listening on localhost: ${PORT}`));
 });
+
+// app.listen(PORT, () => {
+//   console.log(`server listening on ${PORT}`);
+// });
