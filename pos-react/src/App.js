@@ -2,18 +2,27 @@
 // import "./App.css";
 
 import React, { Component } from "react";
+
 import Header from "./components/header";
 import Sidebar from "./components/sidebar";
 import Footer from "./components/footer";
+import Dashboard from "./components/dashboard";
 
-function App() {
-  return (
-    <div>
-      <Header />
-      <Sidebar />
-      <Footer />
-    </div>
-  );
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
+export default class App extends Component {
+  render() {
+    return (
+      <Router>
+        <Routes>
+          <div>
+            <Header />
+            <Sidebar />
+            <Route path="/dashboard" component={Dashboard} />
+            <Footer />
+          </div>
+        </Routes>
+      </Router>
+    );
+  }
 }
-
-export default App;
