@@ -1,14 +1,26 @@
-const { connect, connection } = require("mongoose");
+// const { connect, connection } = require("mongoose");
 
-// On deployment will check for environment variable, if not then local
-const connectionString =
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/posDB";
-console.log(`MongoDB connected`);
+// // On deployment will check for environment variable, if not then local
+// const connectionString =
+//   process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/posDB";
+// console.log(`MongoDB connected`);
 
-// Create connection to MongoDB
-connect(connectionString, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// // Create connection to MongoDB
+// connect(connectionString, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
-module.exports = connection;
+// module.exports = connection;
+
+const mongoose = require("mongoose");
+
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/pos-db",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
+
+module.exports = mongoose.connection;
