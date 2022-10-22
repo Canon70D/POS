@@ -1,10 +1,11 @@
 import React from "react";
+import BasicLayout from "../components/BasicLayout";
 
 const ProductPage = () => {
   return (
-    <div>
+    <BasicLayout>
       <h1>Product List</h1>
-    </div>
+    </BasicLayout>
   );
 };
 
