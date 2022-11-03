@@ -1,4 +1,4 @@
-import { Card } from "antd";
+import { Button, Card } from "antd";
 import React from "react";
 
 const Product = ({ item }) => {
@@ -11,6 +11,9 @@ const Product = ({ item }) => {
         cover={<img alt="example" src={item.image} />}
       >
         <Meta title={item.name} />
+        <div className="item-button">
+          <Button>Add to cart</Button>
+        </div>
       </Card>
     </div>
   );
