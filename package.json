@@ -145,13 +145,14 @@
   },
   "devDependencies": {},
   "scripts": {
+    "install": "cd server && npm i && cd ../client && npm i",
     "start": "cd server && node server.js",
     "seed": "cd server node seeds/seed.js",
     "watch": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"cd server && npm start\" \"npm run client\" ",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "cd server && npm i && cd ../client && npm i"
+    "test": "echo \"Error: no test specified\" && exit 1"
+
   },
   "repository": {
     "type": "git",
