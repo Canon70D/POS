@@ -21,7 +21,7 @@ const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
     return {
       key: `sub${key}`,
       icon: React.createElement(icon),
-      label: `subnav ${key}`,
+      label: `test ${key}`,
       children: new Array(4).fill(null).map((_, j) => {
         const subKey = index * 4 + j + 1;
         return {
@@ -32,6 +32,27 @@ const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
     };
   }
 );
+
+const clothingChildren = ["jeans", "shirts", ""]
+
+const clothing = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
+  (icon, index) => {
+    const key = String(index + 1);
+    return {
+      key: `clothing${key}`,
+      icon: React.createElement(icon),
+      label: `Clothing`,
+      children: new Array(4).fill(null).map((_, j) => {
+        const subKey = index * 4 + j + 1;
+        return {
+          key: subKey,
+          label: `option${subKey}`,
+        };
+      }),
+    };
+  }
+);
+
 const BasicLayout = ({ children }) => (
   <Layout>
     <Header className="header">
@@ -40,7 +61,7 @@ const BasicLayout = ({ children }) => (
         theme="dark"
         mode="horizontal"
         defaultSelectedKeys={[window.location.pathname]}
-        // items={items1}
+      // items={items1}
       >
         <Menu.Item key="/" icon={<HomeOutlined />}>
           <Link to="/">Home</Link>
