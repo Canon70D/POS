@@ -23,3 +23,14 @@
 .ant-layout.ant-layout-has-sider {
   height: 90vh;
 }
+
+.cart-product {
+  padding-left: 20px;
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+.cart-product p {
+  margin-top: 10px;
+  font-weight: bold;
+}

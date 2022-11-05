@@ -1,7 +1,16 @@
 import { Button, Card } from "antd";
 import React from "react";
+import { useDispatch } from "react-redux";
 
 const Product = ({ item }) => {
+  const dispatch = useDispatch();
+  const handleAddTOCart = () => {
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: { ...item, quantity: 1 },
+    });
+  };
+
   const { Meta } = Card;
   return (
     <div>
@@ -12,7 +21,7 @@ const Product = ({ item }) => {
       >
         <Meta title={item.name} />
         <div className="item-button">
-          <Button>Add to cart</Button>
+          <Button onClick={() => handleAddTOCart()}>Add to cart</Button>
         </div>
       </Card>
     </div>
