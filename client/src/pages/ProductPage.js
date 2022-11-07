@@ -1,14 +1,12 @@
 import React from "react";
 import BasicLayout from "../components/BasicLayout";
-import { Input, Collapse, Space } from 'antd';
+import { Input, Collapse, Space } from "antd";
 import "./../styles/ProductPageLayout.css";
 
 const { Panel } = Collapse;
 const { Search } = Input;
 
-
 const ProductPage = () => {
-
   const onChange = (key) => {
     console.log(key);
   };
@@ -26,14 +24,22 @@ const ProductPage = () => {
 
   return (
     <BasicLayout>
-      <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-        <Search className="searchBar" placeholder="Search for a product" onSearch={onSearch} enterButton />
-        <Collapse defaultActiveKey={['1']} onChange={onChange}>
+      <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+        <Search
+          className="searchBar"
+          placeholder="Search for a product"
+          onSearch={onSearch}
+          enterButton
+        />
+        <Collapse defaultActiveKey={["1"]} onChange={onChange}>
           <Panel header="Clothes" key="1">
-            <Collapse defaultActiveKey={['1']} onChange={onChange}>
-
+            <Collapse defaultActiveKey={["1"]} onChange={onChange}>
               <Panel header="Tops" key="2">
-                <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+                <Space
+                  direction="vertical"
+                  size="middle"
+                  style={{ display: "flex" }}
+                >
                   <div className="itemDiv">
                     <p className="itemName">Shirts</p>
                     <div className="quantity">
@@ -42,7 +48,11 @@ const ProductPage = () => {
                     </div>
                     <div className="totalSold">
                       <p>Total Sold: </p>
-                      <Input disabled={true} className="totalSoldInput" placeholder="40" />
+                      <Input
+                        disabled={true}
+                        className="totalSoldInput"
+                        placeholder="40"
+                      />
                     </div>
                   </div>
                   <div className="itemDiv">
@@ -53,16 +63,23 @@ const ProductPage = () => {
                     </div>
                     <div className="totalSold">
                       <p>Total Sold: </p>
-                      <Input disabled={true} className="totalSoldInput" placeholder="40" />
+                      <Input
+                        disabled={true}
+                        className="totalSoldInput"
+                        placeholder="40"
+                      />
                     </div>
                   </div>
                 </Space>
               </Panel>
-
             </Collapse>
-            <Collapse defaultActiveKey={['1']} onChange={onChange}>
+            <Collapse defaultActiveKey={["1"]} onChange={onChange}>
               <Panel header="Bottoms" key="2">
-                <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+                <Space
+                  direction="vertical"
+                  size="middle"
+                  style={{ display: "flex" }}
+                >
                   <div className="itemDiv">
                     <p className="itemName">Jeans</p>
                     <div className="quantity">
@@ -71,7 +88,11 @@ const ProductPage = () => {
                     </div>
                     <div className="totalSold">
                       <p>Total Sold: </p>
-                      <Input disabled={true} className="totalSoldInput" placeholder="40" />
+                      <Input
+                        disabled={true}
+                        className="totalSoldInput"
+                        placeholder="40"
+                      />
                     </div>
                   </div>
                   <div className="itemDiv">
@@ -82,7 +103,11 @@ const ProductPage = () => {
                     </div>
                     <div className="totalSold">
                       <p>Total Sold: </p>
-                      <Input disabled={true} className="totalSoldInput" placeholder="40" />
+                      <Input
+                        disabled={true}
+                        className="totalSoldInput"
+                        placeholder="40"
+                      />
                     </div>
                   </div>
                 </Space>
@@ -90,7 +115,11 @@ const ProductPage = () => {
             </Collapse>
           </Panel>
           <Panel header="Sports" key="3">
-            <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+            <Space
+              direction="vertical"
+              size="middle"
+              style={{ display: "flex" }}
+            >
               <div className="itemDiv">
                 <p className="itemName">Leggings</p>
                 <div className="quantity">
@@ -99,7 +128,11 @@ const ProductPage = () => {
                 </div>
                 <div className="totalSold">
                   <p>Total Sold: </p>
-                  <Input disabled={true} className="totalSoldInput" placeholder="40" />
+                  <Input
+                    disabled={true}
+                    className="totalSoldInput"
+                    placeholder="40"
+                  />
                 </div>
               </div>
               <div className="itemDiv">
@@ -110,7 +143,11 @@ const ProductPage = () => {
                 </div>
                 <div className="totalSold">
                   <p>Total Sold: </p>
-                  <Input disabled={true} className="totalSoldInput" placeholder="40" />
+                  <Input
+                    disabled={true}
+                    className="totalSoldInput"
+                    placeholder="40"
+                  />
                 </div>
               </div>
               <div className="itemDiv">
@@ -121,13 +158,21 @@ const ProductPage = () => {
                 </div>
                 <div className="totalSold">
                   <p>Total Sold: </p>
-                  <Input disabled={true} className="totalSoldInput" placeholder="40" />
+                  <Input
+                    disabled={true}
+                    className="totalSoldInput"
+                    placeholder="40"
+                  />
                 </div>
               </div>
             </Space>
           </Panel>
           <Panel header="Jewellery" key="4">
-            <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+            <Space
+              direction="vertical"
+              size="middle"
+              style={{ display: "flex" }}
+            >
               <div className="itemDiv">
                 <p className="itemName">Necklace</p>
                 <div className="quantity">
@@ -136,7 +181,11 @@ const ProductPage = () => {
                 </div>
                 <div className="totalSold">
                   <p>Total Sold: </p>
-                  <Input disabled={true} className="totalSoldInput" placeholder="40" />
+                  <Input
+                    disabled={true}
+                    className="totalSoldInput"
+                    placeholder="40"
+                  />
                 </div>
               </div>
               <div className="itemDiv">
@@ -147,7 +196,11 @@ const ProductPage = () => {
                 </div>
                 <div className="totalSold">
                   <p>Total Sold: </p>
-                  <Input disabled={true} className="totalSoldInput" placeholder="40" />
+                  <Input
+                    disabled={true}
+                    className="totalSoldInput"
+                    placeholder="40"
+                  />
                 </div>
               </div>
               <div className="itemDiv">
@@ -158,7 +211,11 @@ const ProductPage = () => {
                 </div>
                 <div className="totalSold">
                   <p>Total Sold: </p>
-                  <Input disabled={true} className="totalSoldInput" placeholder="40" />
+                  <Input
+                    disabled={true}
+                    className="totalSoldInput"
+                    placeholder="40"
+                  />
                 </div>
               </div>
               <div className="itemDiv">
@@ -169,15 +226,18 @@ const ProductPage = () => {
                 </div>
                 <div className="totalSold">
                   <p>Total Sold: </p>
-                  <Input disabled={true} className="totalSoldInput" placeholder="40" />
+                  <Input
+                    disabled={true}
+                    className="totalSoldInput"
+                    placeholder="40"
+                  />
                 </div>
               </div>
             </Space>
           </Panel>
         </Collapse>
       </Space>
-    </BasicLayout >
-
+    </BasicLayout>
   );
 };
 

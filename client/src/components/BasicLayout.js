@@ -8,10 +8,9 @@ const { Header, Content } = Layout;
 
 // If user has clicked on an item  from the side menu
 
-const BasicLayout = ({children, hello}) => {
-
+const BasicLayout = ({ children, hello }) => {
   const [itemSelected, setItemSelected] = useState("Hey");
-  
+
   return (
     <Layout>
       <Header className="header">
