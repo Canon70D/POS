@@ -1,17 +1,19 @@
 const { async } = require("rxjs");
-const { Category } = require("../models");
-const Product = require("../models/Product");
+const { User, Category, Subcategory, Product, Order } = require("../models");
 
 const resolvers = {
   Query: {
     categories: async () => {
       return await Category.find();
     },
-    products: async (parent, { category, name }) => {
+    subcategories: async () => {
+      return await Subcategory.find({}.populate('category'));
+    },
+    products: async (parent, { subcategory, name }) => {
       const params = {};
 
-      if (category) {
-        params.category = category;
+      if (subcategory) {
+        params.subcategory = subcategory;
       }
 
       if (name) {
@@ -20,10 +22,10 @@ const resolvers = {
         };
       }
 
-      return await Product.find(params).populate("category");
+      return await Product.find(params).populate("subcategory");
     },
     product: async (parent, { _id }) => {
-      return await Product.findById(_id).populate("category");
+      return await Product.findById(_id).populate("subcategory");
     },
   },
 
@@ -52,6 +54,14 @@ const resolvers = {
 
     removeCategory: async (parent, { categoryId }) => {
       return Category.findOneAndDelete({ _id: categoryId });
+    },
+
+    addSubcategory: async (parent, { name }) => {
+      return Subcategory.create({ name });
+    },
+
+    removeSubcategory: async (parent, { subcategoryId }) => {
+      return Subcategory.findOneAndDelete({ _id: subcategoryId });
     },
   },
 };
