@@ -42,9 +42,13 @@ const productSchema = new Schema(
       default: Date.now,
       get: timeStamp,
     },
-    category: {
+    totalSold: {
+      type: Number,
+      required: false,
+    },
+    subcategory: {
       type: Schema.Types.ObjectId,
-      ref: "Category",
+      ref: "Subcategory",
       required: true,
     },
   },

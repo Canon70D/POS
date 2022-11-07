@@ -1,17 +1,20 @@
 const { async } = require("rxjs");
-const { Category } = require("../models");
-const Product = require("../models/Product");
+const { User, Category, Subcategory, Product, Order } = require("../models");
+const { populate } = require("../models/Category");
 
 const resolvers = {
   Query: {
     categories: async () => {
       return await Category.find();
     },
-    products: async (parent, { category, name }) => {
+    subcategories: async () => {
+      return await Subcategory.find({}).populate('category');
+    },
+    products: async (parent, { subcategory, name }) => {
       const params = {};
 
-      if (category) {
-        params.category = category;
+      if (subcategory) {
+        params.subcategory = subcategory;
       }
 
       if (name) {
@@ -20,16 +23,22 @@ const resolvers = {
         };
       }
 
-      return await Product.find(params).populate("category");
+      return await Product.find(params).populate("subcategory").populate({
+        path: 'subcategory',
+        populate: 'category'
+      });
     },
     product: async (parent, { _id }) => {
-      return await Product.findById(_id).populate("category");
+      return await Product.findById(_id).populate("subcategory").populate({
+        path: 'subcategory',
+        populate: 'category'
+      });
     },
   },
 
   Mutation: {
-    addProduct: async (parent, { name, price, stock, image, category }) => {
-      return Product.create({ name, price, stock, image, category });
+    addProduct: async (parent, { name, price, stock, image, subcategory }) => {
+      return Product.create({ name, price, stock, image, subcategory });
     },
 
     removeProduct: async (parent, { productId }) => {
@@ -52,6 +61,14 @@ const resolvers = {
 
     removeCategory: async (parent, { categoryId }) => {
       return Category.findOneAndDelete({ _id: categoryId });
+    },
+
+    addSubcategory: async (parent, { name, category }) => {
+      return Subcategory.create({ name, category });
+    },
+
+    removeSubcategory: async (parent, { subcategoryId }) => {
+      return Subcategory.findOneAndDelete({ _id: subcategoryId });
     },
   },
 };
