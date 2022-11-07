@@ -1,12 +1,25 @@
 import { gql } from "@apollo/client";
 
 export const QUERY_PRODUCTS = gql`
-  # create a GraphQL query to be executed by Apollo Client
-  query getProductss {
+  {
     products {
+      _id
       name
       price
+      stock
       image
+      category {
+        name
+      }
+    }
+  }
+`;
+
+export const QUERY_CATEGORIES = gql`
+  {
+    categories {
+      _id
+      name
     }
   }
 `;
