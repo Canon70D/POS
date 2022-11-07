@@ -42,6 +42,10 @@ const productSchema = new Schema(
       default: Date.now,
       get: timeStamp,
     },
+    totalSold: {
+      type: Number,
+      required: false,
+    },
     subcategory: {
       type: Schema.Types.ObjectId,
       ref: "Subcategory",
