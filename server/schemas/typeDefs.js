@@ -34,6 +34,7 @@ const typeDefs = gql`
       price: Float!
       stock: Int!
       image: String
+      category: ID
     ): Product
     removeProduct(productId: ID!): Product
     updateProduct(_id: ID!, quantity: Int!): Product
