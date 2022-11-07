@@ -32,15 +32,33 @@ const Homepage = () => {
   //   getAllProducts();
   // }, []);
 
+  const [itemSelected, setItemSelected] = useState("Hey");
+
+
   return (
-    <BasicLayout>
-      <Row>
+    <BasicLayout hello={itemSelected}>
+      {/* <Row>
         {productData.map((products) => (
           <Col xs={24} lg={6} md={12} sm={6}>
             <Product item={products} />
           </Col>
         ))}
-      </Row>
+      </Row> */}
+
+      <div>
+        {/* Conditional (ternary) operator is checking to see if itemSelected is not an empty string. If so render the following: */}
+        {itemSelected != "" ? (
+          <div>
+            <h3>You picked an item</h3>
+          </div>
+        ) : (
+          // If user has not selected any item yet
+          <div>
+            <h3>There is no items selected yet.</h3>
+            <h3>Please pick an item from the list on the left.</h3>
+          </div>
+        )}
+      </div>
     </BasicLayout>
   );
 };
