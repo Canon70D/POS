@@ -42,6 +42,11 @@ const productSchema = new Schema(
       default: Date.now,
       get: timeStamp,
     },
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
   },
   {
     toJSON: {
