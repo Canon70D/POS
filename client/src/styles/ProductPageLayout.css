@@ -1,0 +1,25 @@
+.itemDiv {
+    display: flex;
+    flex-flow: row;
+}
+
+.quantityInput {
+    margin-left: 10px;
+}
+
+.itemName{
+    margin-right: 20px;
+    font-weight: bold;
+}
+.quantity {
+    display: flex;
+    flex-flow: row;
+    height: 40px;
+}
+
+.totalSold {
+    display: flex;
+    flex-flow: row;
+    margin-left: 20px;
+    height: 40px;
+}
