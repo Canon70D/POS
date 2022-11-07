@@ -21,11 +21,6 @@ const typeDefs = gql`
     employeeId: String
   }
 
-  type Auth {
-    token: ID
-    user: User
-  }
-
   type Query {
     categories: [Category]
     products(category: ID, name: String): [Product]
@@ -34,10 +29,16 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addUser(name: String!, employeeId: String!, password: String!): Auth
-    updateUser(name: String, employeeId: String, password: String): User
+    addProduct(
+      name: String!
+      price: Float!
+      stock: Int!
+      image: String
+    ): Product
+    removeProduct(productId: ID!): Product
     updateProduct(_id: ID!, quantity: Int!): Product
-    login(employeeId: String!, password: String!): Auth
+    addCategory(name: String!): Category
+    removeCategory(categoryId: ID!): Category
   }
 `;
 
