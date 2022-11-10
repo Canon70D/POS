@@ -1,17 +1,94 @@
-import React from "react";
+import React, { Fragment, useState } from 'react'
 import BasicLayout from "../components/BasicLayout";
-import { Input, Collapse, Space } from "antd";
+import { Input, Collapse, Space, Card, List, Button } from "antd";
 import "./../styles/ProductPageLayout.css";
+import { useQuery } from "@apollo/client";
+import { QUERY_PRODUCT_BY_NAME } from "./../utils/queries";
 
 const { Panel } = Collapse;
 const { Search } = Input;
 
 const ProductPage = () => {
+  const [productName, setProductName] = useState(0);
+
+
+  const { data: QUERY_PRODUCT_BY_NAME_DATA } = useQuery(QUERY_PRODUCT_BY_NAME, {
+    variables: { name: productName },
+  });
+
+  const productByNameData = QUERY_PRODUCT_BY_NAME_DATA?.products || [];
+
   const onChange = (key) => {
     console.log(key);
   };
 
-  const onSearch = (value) => console.log(value);
+  const onChangeStockInput = (e) => {
+    console.log(e.target.value);
+  };
+  const onChangePriceInput = (e) => {
+    console.log(e.target.value);
+  };
+
+  const onSearch = async function (name) {
+    setProductName(name)
+    console.log(name);
+    console.log(productName);
+    console.log(productByNameData);
+  }
+
+  const onClickUpdateButton = (e) => {
+    console.log("Clicked update button");
+  };
+  
+
+  const SearchList = () => {
+    return (
+      <List
+        grid={{
+          gutter: 16,
+          xs: 1,
+          sm: 2,
+          md: 2,
+          lg: 4,
+          xl: 5,
+          xxl: 6,
+        }}
+        dataSource={productByNameData}
+        renderItem={item => (
+          <List.Item>
+            <Card title={item.name}>
+              <div className="price">
+                <div><b>Price: </b>
+                </div>
+                <Input
+                  className="priceInput"
+                  placeholder={item.price}
+                  onChange={onChangePriceInput}
+                />
+              </div>
+              <div className="stock">
+                <div><b>Stock: </b>
+                </div>
+                <Input
+                  className="stockInput"
+                  placeholder={item.stock}
+                  onChange={onChangeStockInput}
+                />
+              </div>
+              <Button
+                // disabled={true}
+                className="updateButton"
+                type="primary"
+                onClick={onClickUpdateButton}
+              >
+                Update
+              </Button>
+            </Card>
+          </List.Item>
+        )}
+      />
+    )
+  }
 
   //   <div className="quantity">
   //   <p>Qty: </p>
@@ -31,6 +108,7 @@ const ProductPage = () => {
           onSearch={onSearch}
           enterButton
         />
+        <SearchList />
         <Collapse defaultActiveKey={["1"]} onChange={onChange}>
           <Panel header="Clothes" key="1">
             <Collapse defaultActiveKey={["1"]} onChange={onChange}>

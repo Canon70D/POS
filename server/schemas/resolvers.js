@@ -4,12 +4,22 @@ const { populate } = require("../models/Category");
 
 const resolvers = {
   Query: {
+
     categories: async () => {
-      return await Category.find();
+      return await Category.find()
     },
+    subCategoriesById: async (parent, { category }) => {
+      return await Subcategory.find({ category })
+    },
+
     subcategories: async () => {
       return await Subcategory.find({}).populate('category');
     },
+
+    productById: async (parent, { subcategory }) => {
+      return await Product.find({ subcategory })
+    },
+
     products: async (parent, { subcategory, name }) => {
       const params = {};
 
@@ -28,6 +38,7 @@ const resolvers = {
         populate: 'category'
       });
     },
+
     product: async (parent, { _id }) => {
       return await Product.findById(_id).populate("subcategory").populate({
         path: 'subcategory',
