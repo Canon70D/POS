@@ -27,10 +27,6 @@ db.once("open", async () => {
       category: categories[0]
     },
     { 
-      name: "Brand 3",
-      category: categories[0]
-    },
-    { 
       name: "Module 1",
       category: categories[1]
     },
@@ -43,19 +39,11 @@ db.once("open", async () => {
       category: categories[1]
     },
     { 
-      name: "Module 4",
-      category: categories[1]
-    },
-    { 
       name: "Brand 4",
       category: categories[2]
     },
     { 
       name: "Brand 5",
-      category: categories[2]
-    },
-    { 
-      name: "Brand 6",
       category: categories[2]
     },
   ]);
@@ -85,7 +73,7 @@ db.once("open", async () => {
     },
     {
       name: "test name 3",
-      subcategory: subcategories[0],
+      subcategory: subcategories[1],
       price: 300,
       stock: 10,
       image:
@@ -101,7 +89,7 @@ db.once("open", async () => {
     },
     {
       name: "test name 5",
-      subcategory: subcategories[1],
+      subcategory: subcategories[2],
       price: 500,
       stock: 10,
       image:
@@ -109,7 +97,7 @@ db.once("open", async () => {
     },
     {
       name: "test name 6",
-      subcategory: subcategories[1],
+      subcategory: subcategories[2],
       price: 600,
       stock: 10,
       image:
@@ -117,7 +105,7 @@ db.once("open", async () => {
     },
     {
       name: "test name 7",
-      subcategory: subcategories[2],
+      subcategory: subcategories[3],
       price: 700,
       stock: 10,
       image:
@@ -125,7 +113,7 @@ db.once("open", async () => {
     },
     {
       name: "test name 8",
-      subcategory: subcategories[2],
+      subcategory: subcategories[3],
       price: 800,
       stock: 10,
       image:
@@ -133,7 +121,47 @@ db.once("open", async () => {
     },
     {
       name: "test name 9",
-      subcategory: subcategories[2],
+      subcategory: subcategories[4],
+      price: 900,
+      stock: 10,
+      image:
+        "https://place-hold.it/300x300/89E7F2/000000/E3DEDE.png&text=product&italic",
+    },
+    {
+      name: "test name 10",
+      subcategory: subcategories[4],
+      price: 900,
+      stock: 10,
+      image:
+        "https://place-hold.it/300x300/89E7F2/000000/E3DEDE.png&text=product&italic",
+    },
+    {
+      name: "test name 11",
+      subcategory: subcategories[5],
+      price: 900,
+      stock: 10,
+      image:
+        "https://place-hold.it/300x300/89E7F2/000000/E3DEDE.png&text=product&italic",
+    },
+    {
+      name: "test name 12",
+      subcategory: subcategories[5],
+      price: 900,
+      stock: 10,
+      image:
+        "https://place-hold.it/300x300/89E7F2/000000/E3DEDE.png&text=product&italic",
+    },
+    {
+      name: "test name 13",
+      subcategory: subcategories[6],
+      price: 900,
+      stock: 10,
+      image:
+        "https://place-hold.it/300x300/89E7F2/000000/E3DEDE.png&text=product&italic",
+    },
+    {
+      name: "test name 14",
+      subcategory: subcategories[6],
       price: 900,
       stock: 10,
       image:
