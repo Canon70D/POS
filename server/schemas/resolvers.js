@@ -1,22 +1,21 @@
-const { async } = require("rxjs");
 const { User, Category, Subcategory, Product, Order } = require("../models");
 
 const resolvers = {
   Query: {
 
     categories: async () => {
-      return await Category.find({}).populate("subcategory").populate({
-        path: 'subcategory',
-        populate: 'product'
+      return await Category.find({}).populate("subcategories").populate({
+        path: 'subcategories',
+        populate: "products"
       });
     },
     
     subCategoriesById: async (parent, { _id }) => {
-      return await Subcategory.findById(_id).populate('product')
+      return await Subcategory.findById(_id).populate("products")
     },
 
     subcategories: async () => {
-      return await Subcategory.find({}).populate('product');
+      return await Subcategory.find({}).populate("products");
     },
 
     productById: async (parent, { _id }) => {

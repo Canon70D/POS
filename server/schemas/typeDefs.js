@@ -4,14 +4,13 @@ const typeDefs = gql`
   type Category {
     _id: ID
     name: String
-    subcategory: Subcategory
+    subcategories: [Subcategory]
   }
-  
 
   type Subcategory {
     _id: ID
     name: String
-    product: Product
+    products: [Product]
   }
 
   type Product {
@@ -33,8 +32,8 @@ const typeDefs = gql`
     subCategoriesById(category: ID): [Subcategory]
     subcategories: [Subcategory]
     productById(subcategory: ID): [Product]
-    products(category: ID, name: String): [Product]
-    product(_id: ID!): Product
+    products: [Product]
+    
     user: User
   }
 
@@ -44,7 +43,7 @@ const typeDefs = gql`
       price: Float!
       stock: Int!
       image: String
-      category: ID
+      subcategory: ID
     ): Product
     removeProduct(productId: ID!): Product
     updateProduct(_id: ID!, quantity: Int!): Product
