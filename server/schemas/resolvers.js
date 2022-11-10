@@ -7,7 +7,7 @@ const resolvers = {
     categories: async () => {
       return await Category.find({}).populate("subcategory").populate({
         path: 'subcategory',
-        populate: 'category'
+        populate: 'product'
       });
     },
     
