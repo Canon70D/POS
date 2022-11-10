@@ -1,23 +1,25 @@
-const { async } = require("rxjs");
 const { User, Category, Subcategory, Product, Order } = require("../models");
-const { populate } = require("../models/Category");
 
 const resolvers = {
   Query: {
 
     categories: async () => {
-      return await Category.find()
+      return await Category.find({}).populate("subcategories").populate({
+        path: 'subcategories',
+        populate: "products"
+      });
     },
-    subCategoriesById: async (parent, { category }) => {
-      return await Subcategory.find({ category })
+    
+    subCategoriesById: async (parent, { _id }) => {
+      return await Subcategory.findById(_id).populate("products")
     },
 
     subcategories: async () => {
-      return await Subcategory.find({}).populate('category');
+      return await Subcategory.find({}).populate("products");
     },
 
-    productById: async (parent, { subcategory }) => {
-      return await Product.find({ subcategory })
+    productById: async (parent, { _id }) => {
+      return await Product.findById(_id)
     },
 
     products: async (parent, { subcategory, name }) => {
@@ -33,18 +35,9 @@ const resolvers = {
         };
       }
 
-      return await Product.find(params).populate("subcategory").populate({
-        path: 'subcategory',
-        populate: 'category'
-      });
+      return await Product.find(params)
     },
 
-    product: async (parent, { _id }) => {
-      return await Product.findById(_id).populate("subcategory").populate({
-        path: 'subcategory',
-        populate: 'category'
-      });
-    },
   },
 
   Mutation: {
