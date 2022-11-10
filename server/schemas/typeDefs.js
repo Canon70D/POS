@@ -4,13 +4,14 @@ const typeDefs = gql`
   type Category {
     _id: ID
     name: String
+    subcategory: Subcategory
   }
   
 
   type Subcategory {
     _id: ID
     name: String
-    category: Category
+    product: Product
   }
 
   type Product {
@@ -19,7 +20,6 @@ const typeDefs = gql`
     price: Float
     stock: Int
     image: String
-    subcategory: Subcategory
   }
 
   type User {
