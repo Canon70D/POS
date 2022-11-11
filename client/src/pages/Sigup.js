@@ -10,7 +10,7 @@ function Signup(props) {
   const [addUser] = useMutation(ADD_USER);
 
   const handleFormSubmit = async (event) => {
-    event.preventDefault();
+    // event.preventDefault();
     const mutationResponse = await addUser({
       variables: {
         name: formState.name,
@@ -48,7 +48,7 @@ function Signup(props) {
         initialValues={{
           remember: false,
         }}
-        onSubmit={handleFormSubmit}
+        onFinish={handleFormSubmit}
       >
         <Form.Item
           label="EmployeeId"
@@ -112,7 +112,7 @@ function Signup(props) {
             Signup
           </Button>
           <Button type="secondary" htmlType="submit">
-            <Link to="/login">Login</Link>
+            <Link to="/">Login</Link>
           </Button>
         </Form.Item>
       </Form>

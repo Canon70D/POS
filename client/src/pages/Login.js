@@ -10,7 +10,8 @@ function Login(props) {
   const [login, { error }] = useMutation(LOGIN);
 
   const handleFormSubmit = async (event) => {
-    event.preventDefault();
+    //
+    // event.preventDefault(); {work without this line, have no idea why ...}
     try {
       const mutationResponse = await login({
         variables: {
@@ -51,7 +52,7 @@ function Login(props) {
         initialValues={{
           remember: false,
         }}
-        onSubmit={handleFormSubmit}
+        onFinish={handleFormSubmit}
       >
         <Form.Item
           label="EmployeeId"
