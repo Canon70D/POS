@@ -1,5 +1,5 @@
 const db = require("../config/connections");
-const { User, Product, Category, Subcategory } = require("../models");
+const { User, Product, Category, Subcategory, Order } = require("../models");
 
 db.once("open", async () => {
   //clean databse
@@ -207,6 +207,21 @@ db.once("open", async () => {
 
   console.log("==================");
   console.log("users seeded");
+  console.log("==================");
+
+  await Order.deleteMany();
+
+  await Order.create({
+    customerName: "test name",
+    customerNumber: 123456789,
+    paymentMode: "Card",
+    total: 1000,
+    grandTotal: 1100,
+    tax: 100,
+  });
+
+  console.log("==================");
+  console.log("order seeded");
   console.log("==================");
 
   process.exit(0);

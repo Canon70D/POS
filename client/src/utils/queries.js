@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client";
 
-
 export const QUERY_PRODUCT_BY_NAME = gql`
   query Product($name: String) {
     products(name: $name) {
@@ -13,12 +12,12 @@ export const QUERY_PRODUCT_BY_NAME = gql`
 `;
 
 export const QUERY_CATEGORIES = gql`
-    query Categories {
-      categories {
-        _id
-        name
-      }
+  query Categories {
+    categories {
+      _id
+      name
     }
+  }
 `;
 
 export const SUB_CATEGORIES_BY_CATEGORY = gql`
@@ -30,7 +29,6 @@ export const SUB_CATEGORIES_BY_CATEGORY = gql`
   }
 `;
 
-
 export const PRODUCT_BY_SUBCATEGORY = gql`
   query ProductById($subcategory: ID) {
     productById(subcategory: $subcategory) {
@@ -39,10 +37,6 @@ export const PRODUCT_BY_SUBCATEGORY = gql`
     }
   }
 `;
-
-
-
-
 
 export const PRODUCTS_SUBCAT_CAT = gql`
   query Products {
@@ -60,24 +54,41 @@ export const PRODUCTS_SUBCAT_CAT = gql`
   }
 `;
 
-
-
 export const QUERY_PRODUCTS = gql`
-    query Product {
-      products {
-        name
+  query Product {
+    products {
+      name
+      _id
+      image
+      price
+      stock
+      subcategory {
         _id
-        image
-        price
-        stock
-        subcategory {
+        category {
           _id
-          category {
-            _id
-            name
-          }
           name
         }
+        name
       }
     }
+  }
+`;
+
+export const QUERY_ORDERS = gql`
+  query ORDERS {
+    orders {
+      _id
+      customerName
+      customerNumber
+      total
+      grandTotal
+      tax
+      paymentMode
+      purchaseDate
+      products {
+        name
+        price
+      }
+    }
+  }
 `;
