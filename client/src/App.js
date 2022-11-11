@@ -85,7 +85,7 @@ function App() {
 export default App;
 
 export function ProtectedRoute({ children }) {
-  if (localStorage.getItem("auth")) {
+  if (localStorage.getItem("id_token")) {
     return children;
   } else {
     return <Navigate to="/" />;
