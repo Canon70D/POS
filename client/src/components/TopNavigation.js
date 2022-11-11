@@ -1,6 +1,7 @@
 import { Menu } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
+import Auth from "../utils/auth";
 
 const TopNavigation = () => (
   <Menu
@@ -9,7 +10,7 @@ const TopNavigation = () => (
     defaultSelectedKeys={[window.location.pathname]}
     // items={items1}
   >
-    <Menu.Item key="/" >
+    <Menu.Item key="/">
       <Link to="/">Home</Link>
     </Menu.Item>
     <Menu.Item key="/products">
@@ -19,7 +20,10 @@ const TopNavigation = () => (
       <Link to="/customers">Customers</Link>
     </Menu.Item>
     <Menu.Item key="/logout">
-      Logout
+      {" "}
+      <a href="/" onClick={() => Auth.logout()}>
+        Logout
+      </a>
     </Menu.Item>
   </Menu>
 );

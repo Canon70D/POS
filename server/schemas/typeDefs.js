@@ -27,13 +27,18 @@ const typeDefs = gql`
     employeeId: String
   }
 
+  type Auth {
+    token: ID
+    user: User
+  }
+
   type Query {
     categories: [Category]
     subCategoriesById(category: ID): [Subcategory]
     subcategories: [Subcategory]
     productById(subcategory: ID): [Product]
     products: [Product]
-    
+
     user: User
   }
 
@@ -51,6 +56,8 @@ const typeDefs = gql`
     removeCategory(categoryId: ID!): Category
     addSubcategory(name: String!): Subcategory
     removeSubcategory(categoryId: ID!): Subcategory
+    login(employeeId: String!, password: String!): Auth
+    addUser(name: String!, employeeId: String!, password: String!): Auth
   }
 `;
 

@@ -1,17 +1,18 @@
 const { User, Category, Subcategory, Product, Order } = require("../models");
+const { AuthenticationError } = require("apollo-server-express");
+const { signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
-
     categories: async () => {
       return await Category.find({}).populate("subcategories").populate({
-        path: 'subcategories',
-        populate: "products"
+        path: "subcategories",
+        populate: "products",
       });
     },
-    
+
     subCategoriesById: async (parent, { _id }) => {
-      return await Subcategory.findById(_id).populate("products")
+      return await Subcategory.findById(_id).populate("products");
     },
 
     subcategories: async () => {
@@ -19,7 +20,7 @@ const resolvers = {
     },
 
     productById: async (parent, { _id }) => {
-      return await Product.findById(_id)
+      return await Product.findById(_id);
     },
 
     products: async (parent, { subcategory, name }) => {
@@ -35,9 +36,8 @@ const resolvers = {
         };
       }
 
-      return await Product.find(params)
+      return await Product.find(params);
     },
-
   },
 
   Mutation: {
@@ -73,6 +73,31 @@ const resolvers = {
 
     removeSubcategory: async (parent, { subcategoryId }) => {
       return Subcategory.findOneAndDelete({ _id: subcategoryId });
+    },
+
+    addUser: async (parent, { name, employeeId, password }) => {
+      const user = await User.create({ name, employeeId, password });
+      const token = signToken(user);
+
+      return { token, user };
+    },
+
+    login: async (parent, { employeeId, password }) => {
+      const user = await User.findOne({ employeeId });
+
+      if (!user) {
+        throw new AuthenticationError("Incorrect credentials");
+      }
+
+      const correctPw = await user.isCorrectPassword(password);
+
+      if (!correctPw) {
+        throw new AuthenticationError("Incorrect credentials");
+      }
+
+      const token = signToken(user);
+
+      return { token, user };
     },
   },
 };

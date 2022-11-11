@@ -1,29 +1,25 @@
 import { Button, Form, Input, PageHeader } from "antd";
 import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
-import { LOGIN } from "../utils/mutations";
+import { useMutation } from "@apollo/client";
 import Auth from "../utils/auth";
+import { ADD_USER } from "../utils/mutations";
 
-function Login(props) {
+function Signup(props) {
   const [formState, setFormState] = useState({ employeeId: "", password: "" });
-  const [login, { error }] = useMutation(LOGIN);
+  const [addUser] = useMutation(ADD_USER);
 
   const handleFormSubmit = async (event) => {
-    //
-    // event.preventDefault(); {work without this line, have no idea why ...}
-    try {
-      const mutationResponse = await login({
-        variables: {
-          employeeId: formState.employeeId,
-          password: formState.password,
-        },
-      });
-      const token = mutationResponse.data.login.token;
-      Auth.login(token);
-    } catch (e) {
-      console.log(e);
-    }
+    // event.preventDefault();
+    const mutationResponse = await addUser({
+      variables: {
+        name: formState.name,
+        password: formState.password,
+        employeeId: formState.employeeId,
+      },
+    });
+    const token = mutationResponse.data.addUser.token;
+    Auth.login(token);
   };
 
   const handleChange = (event) => {
@@ -65,13 +61,29 @@ function Login(props) {
           ]}
         >
           <Input
-            placeholder="put employee ID number here"
+            placeholder="Your Employee ID number here"
             name="employeeId"
             type="employeeId"
             onChange={handleChange}
           />
         </Form.Item>
-
+        <Form.Item
+          label="Name"
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: "Please input your Name!",
+            },
+          ]}
+        >
+          <Input
+            placeholder="Your Name Here"
+            name="name"
+            type="name"
+            onChange={handleChange}
+          />
+        </Form.Item>
         <Form.Item
           label="Password"
           name="password"
@@ -83,17 +95,13 @@ function Login(props) {
           ]}
         >
           <Input
-            placeholder="******"
+            placeholder="Your Password Here"
             name="password"
             type="password"
             onChange={handleChange}
           />
         </Form.Item>
-        {error ? (
-          <div>
-            <p className="error-text">The provided credentials are incorrect</p>
-          </div>
-        ) : null}
+
         <Form.Item
           wrapperCol={{
             offset: 8,
@@ -101,10 +109,10 @@ function Login(props) {
           }}
         >
           <Button type="primary" htmlType="submit">
-            LOGIN
+            Signup
           </Button>
           <Button type="secondary" htmlType="submit">
-            <Link to="/signup">Signup</Link>
+            <Link to="/">Login</Link>
           </Button>
         </Form.Item>
       </Form>
@@ -112,4 +120,4 @@ function Login(props) {
   );
 }
 
-export default Login;
+export default Signup;

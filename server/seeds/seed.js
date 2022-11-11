@@ -1,5 +1,5 @@
 const db = require("../config/connections");
-const { Product, Category, Subcategory } = require("../models");
+const { User, Product, Category, Subcategory } = require("../models");
 
 db.once("open", async () => {
   //clean databse
@@ -123,50 +123,50 @@ db.once("open", async () => {
   console.log("==================");
   console.log("products seeded");
   console.log("==================");
-  
+
   await Subcategory.deleteMany();
 
   const subcategories = await Subcategory.insertMany([
-    { 
+    {
       name: "Brand 1",
     },
-    { 
+    {
       name: "Brand 2",
     },
-    { 
+    {
       name: "Brand 3",
     },
-    { 
+    {
       name: "Module 1",
     },
-    { 
+    {
       name: "Module 2",
     },
-    { 
+    {
       name: "Module 3",
     },
-    { 
+    {
       name: "Module 4",
     },
-    { 
+    {
       name: "Brand 4",
     },
-    { 
+    {
       name: "Brand 5",
     },
-    { 
+    {
       name: "Brand 6",
     },
   ]);
 
   let index = 0;
   for (subCat of subcategories) {
-    subCat.products.push(products[index]);  
-    subCat.products.push(products[index + 1]);  
+    subCat.products.push(products[index]);
+    subCat.products.push(products[index + 1]);
     await subCat.save();
-    index = index + 2; 
+    index = index + 2;
   }
- 
+
   console.log("==================");
   console.log("subcategories seeded");
   console.log("==================");
@@ -174,27 +174,39 @@ db.once("open", async () => {
   await Category.deleteMany();
 
   const categories = await Category.insertMany([
-    { 
+    {
       name: "Apparel",
     },
-    { 
-      name: "Sneakers", 
+    {
+      name: "Sneakers",
     },
-    { 
-      name: "Accessories", 
+    {
+      name: "Accessories",
     },
   ]);
-  
+
   let iindex = 0;
   for (cat of categories) {
-    cat.subcategories.push(subcategories[iindex]);  
-    cat.subcategories.push(subcategories[iindex + 1]);  
+    cat.subcategories.push(subcategories[iindex]);
+    cat.subcategories.push(subcategories[iindex + 1]);
     await cat.save();
-    iindex = iindex + 2; 
+    iindex = iindex + 2;
   }
 
   console.log("==================");
   console.log("categories seeded");
+  console.log("==================");
+
+  await User.deleteMany();
+
+  await User.create({
+    name: "testName",
+    employeeId: "123456",
+    password: "password12345",
+  });
+
+  console.log("==================");
+  console.log("users seeded");
   console.log("==================");
 
   process.exit(0);
