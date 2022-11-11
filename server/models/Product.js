@@ -46,11 +46,6 @@ const productSchema = new Schema(
       type: Number,
       required: false,
     },
-    subcategory: {
-      type: Schema.Types.ObjectId,
-      ref: "Subcategory",
-      required: true,
-    },
   },
   {
     toJSON: {

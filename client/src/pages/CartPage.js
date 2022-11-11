@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import BasicLayout from "../components/BasicLayout";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -6,9 +6,12 @@ import {
   PlusCircleOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons";
-import { Table } from "antd";
+import { Button, Modal, Table, Form, Select, Input } from "antd";
 
 const CartPage = () => {
+  const [total, setTotal] = useState(0);
+  const [totalPopup, setTotalPopup] = useState(false);
+
   const dispatch = useDispatch();
 
   const { cartProducts } = useSelector((state) => state.rootReducer);
@@ -76,10 +79,71 @@ const CartPage = () => {
     },
   ];
 
+  //to get total price
+  useEffect(() => {
+    let sum = 0;
+    cartProducts.forEach(
+      (element) => (sum = sum + element.price * element.quantity)
+    );
+    setTotal(sum);
+  }, [cartProducts]);
+
+  //handle the form submit
+  const handleSubmit = (value) => {
+    console.log(value);
+  };
+
   return (
     <BasicLayout>
       <h1>Cart Page</h1>
       <Table columns={columns} dataSource={cartProducts} bordered />
+      <div className="d-flex flex-column alig-item-end">
+        <hr />
+        <h3>
+          Sub Total : $<b> {total}</b>
+        </h3>
+        <Button type="primary" onClick={() => setTotalPopup(true)}>
+          Create Invoice
+        </Button>
+      </div>
+      <Modal
+        title="Create Invoice"
+        visible={totalPopup}
+        onCancel={() => setTotalPopup(false)}
+        footer={false}
+      >
+        <Form layout="vertical" onFinish={handleSubmit}>
+          <Form.Item name="customerName" label="Customer Name">
+            <Input />
+          </Form.Item>
+          <Form.Item name="customerNumber" label="Contact Number">
+            <Input />
+          </Form.Item>
+          <Form.Item name="paymentMode" label="Payment Method">
+            <Select>
+              <Select.Option value="cash">Cash</Select.Option>
+              <Select.Option value="card">Card</Select.Option>
+            </Select>
+          </Form.Item>
+          <div className="bill-it">
+            <h5>
+              Sub Total : <b>{total}</b>
+            </h5>
+            <h4>
+              TAX :<b> {((total / 100) * 10).toFixed(2)}</b>
+            </h4>
+            <h3>
+              GRAND TOTAL :{" "}
+              <b>{Number(total) + Number(((total / 100) * 10).toFixed(2))}</b>
+            </h3>
+          </div>
+          <div className="d-flex justify-content-end">
+            <Button type="primary" htmlType="submit">
+              Create Invoice
+            </Button>
+          </div>
+        </Form>
+      </Modal>
     </BasicLayout>
   );
 };
