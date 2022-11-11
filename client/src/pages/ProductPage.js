@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useRef } from 'react'
 import BasicLayout from "../components/BasicLayout";
-import { Input, Collapse, Space, Card, List, Button } from "antd";
+import { Input, Collapse, Space, Card, List, Button, Form } from "antd";
 import "./../styles/ProductPageLayout.css";
 import { useQuery } from "@apollo/client";
 import { QUERY_PRODUCT_BY_NAME } from "./../utils/queries";
@@ -10,6 +10,16 @@ const { Search } = Input;
 
 const ProductPage = () => {
   const [productName, setProductName] = useState(0);
+  const priceInputRef = useRef(null);
+  const stockInputRef = useRef(null);
+  const [form] = Form.useForm();
+  const [items, setItems] = useState({
+    id: 0,
+    price: 0,
+    updateId: 0,
+    update: false
+  })
+
 
 
   const { data: QUERY_PRODUCT_BY_NAME_DATA } = useQuery(QUERY_PRODUCT_BY_NAME, {
@@ -19,27 +29,46 @@ const ProductPage = () => {
   const productByNameData = QUERY_PRODUCT_BY_NAME_DATA?.products || [];
 
   const onChange = (key) => {
-    console.log(key);
+    // console.log(key);
   };
 
   const onChangeStockInput = (e) => {
     console.log(e.target.value);
   };
-  const onChangePriceInput = (e) => {
-    console.log(e.target.value);
+
+  const onChangePriceInput = (id) => (e) => {
+    // console.log(e.target.value);
+    // console.log(id);
   };
 
   const onSearch = async function (name) {
     setProductName(name)
-    console.log(name);
-    console.log(productName);
-    console.log(productByNameData);
+    // console.log(name);
+    // console.log(productName);
+    // console.log(productByNameData);
   }
 
-  const onClickUpdateButton = (e) => {
+  const onClickUpdateButton = (id, price, stock, test) => {
     console.log("Clicked update button");
+    console.log(id);
+    console.log(priceInputRef.current.input.value);
+    console.log(stockInputRef.current.input.value);
+    console.log(test);
   };
-  
+
+  const onFinish = (values) => {
+    console.log(values);
+  };
+
+  const layout = {
+    labelCol: {
+      span: 8,
+    },
+    wrapperCol: {
+      span: 16,
+    },
+  };
+
 
   const SearchList = () => {
     return (
@@ -55,21 +84,26 @@ const ProductPage = () => {
         }}
         dataSource={productByNameData}
         renderItem={item => (
-          <List.Item>
+          <List.Item
+            // extra={<Button onClick={() => onClickUpdateButton()} size="medium">Update</Button>}
+            id={item._id}
+          >
             <Card title={item.name}>
-              <div className="price">
+              {/* <div className="price">
                 <div><b>Price: </b>
                 </div>
                 <Input
+                  ref={priceInputRef}
                   className="priceInput"
                   placeholder={item.price}
-                  onChange={onChangePriceInput}
+                  onChange={onChangePriceInput(item._id)}
                 />
               </div>
               <div className="stock">
                 <div><b>Stock: </b>
                 </div>
                 <Input
+                  ref={stockInputRef}
                   className="stockInput"
                   placeholder={item.stock}
                   onChange={onChangeStockInput}
@@ -79,10 +113,24 @@ const ProductPage = () => {
                 // disabled={true}
                 className="updateButton"
                 type="primary"
-                onClick={onClickUpdateButton}
+                onClick={() => onClickUpdateButton(item._id, item.price, item.stock)}
               >
                 Update
-              </Button>
+              </Button> */}
+              <Form {...layout} form={form} name={`formname${item._id}`} onFinish={onFinish}>
+                <Form.Item
+                  name={`price${item._id}`}
+                  label="Price"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <Input label={item._id} placeholder={item.price} >
+                  </Input>
+                </Form.Item>
+              </Form>
             </Card>
           </List.Item>
         )}
@@ -109,7 +157,7 @@ const ProductPage = () => {
           enterButton
         />
         <SearchList />
-        <Collapse defaultActiveKey={["1"]} onChange={onChange}>
+        {/* <Collapse defaultActiveKey={["1"]} onChange={onChange}>
           <Panel header="Clothes" key="1">
             <Collapse defaultActiveKey={["1"]} onChange={onChange}>
               <Panel header="Tops" key="2">
@@ -313,7 +361,7 @@ const ProductPage = () => {
               </div>
             </Space>
           </Panel>
-        </Collapse>
+        </Collapse> */}
       </Space>
     </BasicLayout>
   );
