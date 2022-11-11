@@ -6,7 +6,7 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import "antd/dist/antd.css";
 import Homepage from "./pages/Homepage";
@@ -14,6 +14,7 @@ import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Sigup";
+import InvoicePage from "./pages/InvoicePage";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -40,9 +41,38 @@ function App() {
       <ApolloProvider client={client}>
         <BrowserRouter>
           <Routes>
-            <Route path="/home" element={<Homepage />} />
-            <Route path="/products" element={<ProductPage />} />
-            <Route path="/cart" element={<CartPage />} />
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute>
+                  <Homepage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/products"
+              element={
+                <ProtectedRoute>
+                  <ProductPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute>
+                  <CartPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/invoice"
+              element={
+                <ProtectedRoute>
+                  <InvoicePage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
           </Routes>
@@ -53,3 +83,11 @@ function App() {
 }
 
 export default App;
+
+export function ProtectedRoute({ children }) {
+  if (localStorage.getItem("id_token")) {
+    return children;
+  } else {
+    return <Navigate to="/" />;
+  }
+}
