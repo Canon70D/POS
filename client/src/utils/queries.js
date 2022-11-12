@@ -55,24 +55,36 @@ export const PRODUCTS_SUBCAT_CAT = gql`
 `;
 
 export const QUERY_PRODUCTS = gql`
-  query Product {
+  query Query {
     products {
-      name
       _id
-      image
+      name
       price
       stock
-      subcategory {
-        _id
-        category {
-          _id
-          name
-        }
-        name
-      }
+      image
     }
   }
 `;
+
+// export const QUERY_PRODUCTS = gql`
+//   query Product {
+//     products {
+//       name
+//       _id
+//       image
+//       price
+//       stock
+//       subcategory {
+//         _id
+//         category {
+//           _id
+//           name
+//         }
+//         name
+//       }
+//     }
+//   }
+// `;
 
 export const QUERY_ORDERS = gql`
   query ORDERS {

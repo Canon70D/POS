@@ -15,6 +15,7 @@ import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Sigup";
 import InvoicePage from "./pages/InvoicePage";
+import CustomerPage from "./pages/CustomerPage";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -62,6 +63,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <CartPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/customer"
+              element={
+                <ProtectedRoute>
+                  <CustomerPage />
                 </ProtectedRoute>
               }
             />

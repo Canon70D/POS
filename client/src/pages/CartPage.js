@@ -89,8 +89,20 @@ const CartPage = () => {
   }, [cartProducts]);
 
   //handle the form submit
+  //need to be fixed, can only get the object now
+  //have not applied useMutation
+  //also, cart is not saved, refresh page would clear the cart
   const handleSubmit = (value) => {
-    console.log(value);
+    const newObject = {
+      ...value,
+      cartProducts,
+      total,
+      tax: Number(((total / 100) * 10).toFixed(2)),
+      grandTotal: Number(
+        Number(total) + Number(((total / 100) * 10).toFixed(2))
+      ),
+    };
+    console.log(newObject);
   };
 
   return (
