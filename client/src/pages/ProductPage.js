@@ -1,64 +1,59 @@
-import React, { Fragment, useState, useRef } from 'react'
+import React, { Fragment, useState } from 'react'
 import BasicLayout from "../components/BasicLayout";
 import { Input, Collapse, Space, Card, List, Button, Form } from "antd";
 import "./../styles/ProductPageLayout.css";
-import { useQuery } from "@apollo/client";
-import { QUERY_PRODUCT_BY_NAME } from "./../utils/queries";
+import { useQuery, useMutation } from "@apollo/client";
+import { QUERY_PRODUCT_BY_NAME, QUERY_CAT_SUBCAT_PRODUCT } from "./../utils/queries";
+import { UPDATE_PRODUCT_STOCK } from "./../utils/mutations";
 
 const { Panel } = Collapse;
 const { Search } = Input;
 
 const ProductPage = () => {
+
+  // State for search parameter
   const [productName, setProductName] = useState(0);
-  const priceInputRef = useRef(null);
-  const stockInputRef = useRef(null);
-  const [form] = Form.useForm();
-  const [items, setItems] = useState({
-    id: 0,
-    price: 0,
-    updateId: 0,
-    update: false
-  })
 
-
-
+  // Query for product name with a variable
   const { data: QUERY_PRODUCT_BY_NAME_DATA } = useQuery(QUERY_PRODUCT_BY_NAME, {
     variables: { name: productName },
   });
-
   const productByNameData = QUERY_PRODUCT_BY_NAME_DATA?.products || [];
 
-  const onChange = (key) => {
-    // console.log(key);
-  };
+  // Query for getting all the categories, subcategories and products
+  const { data: QUERY_CAT_SUBCAT_PRODUCT_DATA } = useQuery(QUERY_CAT_SUBCAT_PRODUCT);
+  const catSubcatProductData = QUERY_CAT_SUBCAT_PRODUCT_DATA?.categories || [];
 
-  const onChangeStockInput = (e) => {
-    console.log(e.target.value);
-  };
+  // Mutation to update product information: price and stock
+  const [updateStock] = useMutation(UPDATE_PRODUCT_STOCK);
 
-  const onChangePriceInput = (id) => (e) => {
-    // console.log(e.target.value);
-    // console.log(id);
+
+
+  const handleFormSubmit = async (id, priceUpdate, stockUpdate) => {
+    // event.preventDefault();
+    const mutationResponse = await updateStock({
+      variables: {
+        id: id,
+        price: parseFloat(priceUpdate),
+        stock: parseFloat(stockUpdate)
+      },
+    });
+    console.log(mutationResponse);
   };
 
   const onSearch = async function (name) {
-    setProductName(name)
-    // console.log(name);
-    // console.log(productName);
-    // console.log(productByNameData);
+    // If the search string is empty, do not return any data
+    if (name === "") {
+      console.log("this is null");
+      setProductName(0)
+    } else {
+      setProductName(name)
+    }    
   }
 
-  const onClickUpdateButton = (id, price, stock, test) => {
-    console.log("Clicked update button");
-    console.log(id);
-    console.log(priceInputRef.current.input.value);
-    console.log(stockInputRef.current.input.value);
-    console.log(test);
-  };
-
-  const onFinish = (values) => {
-    console.log(values);
-  };
+  const onChange = async function (value) {
+    console.log(value);
+  }
 
   const layout = {
     labelCol: {
@@ -84,68 +79,70 @@ const ProductPage = () => {
         }}
         dataSource={productByNameData}
         renderItem={item => (
+
           <List.Item
-            // extra={<Button onClick={() => onClickUpdateButton()} size="medium">Update</Button>}
             id={item._id}
           >
             <Card title={item.name}>
-              {/* <div className="price">
-                <div><b>Price: </b>
-                </div>
-                <Input
-                  ref={priceInputRef}
-                  className="priceInput"
-                  placeholder={item.price}
-                  onChange={onChangePriceInput(item._id)}
-                />
-              </div>
-              <div className="stock">
-                <div><b>Stock: </b>
-                </div>
-                <Input
-                  ref={stockInputRef}
-                  className="stockInput"
-                  placeholder={item.stock}
-                  onChange={onChangeStockInput}
-                />
-              </div>
-              <Button
-                // disabled={true}
-                className="updateButton"
-                type="primary"
-                onClick={() => onClickUpdateButton(item._id, item.price, item.stock)}
+              <Form.Provider
+                onFormFinish={(name, { forms }) => {
+                  // Get the id from the formname
+                  let id = name.substring(8);
+                  // construct the field name
+                  let priceFieldName = `price${id}`;
+                  let stockFieldName = `stock${id}`;
+                  // Get the price field value
+                  let priceFieldValue = forms[name].getFieldValue(priceFieldName)
+                  let stockFieldValue = forms[name].getFieldValue(stockFieldName)
+                  console.log(priceFieldValue);
+                  console.log(stockFieldValue);
+                  handleFormSubmit(id, priceFieldValue, stockFieldValue)
+                }}
               >
-                Update
-              </Button> */}
-              <Form {...layout} form={form} name={`formname${item._id}`} onFinish={onFinish}>
-                <Form.Item
-                  name={`price${item._id}`}
-                  label="Price"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
+                <Form
+                  {...layout}
+                  name={`formname${item._id}`}
                 >
-                  <Input label={item._id} placeholder={item.price} >
-                  </Input>
-                </Form.Item>
-              </Form>
+                  <Form.Item
+                    name={`price${item._id}`}
+                    label={`Price `}
+                    initialValue={item.price}
+                    rules={[
+                      {
+                        required: false,
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name={`stock${item._id}`}
+                    label={`Stock `}
+                    initialValue={item.stock}
+                    rules={[
+                      {
+                        required: false,
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item>
+                    <Button
+                      htmlType="submit"
+                      className="updateButton"
+                    >
+                      Update
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Form.Provider>
             </Card>
           </List.Item>
         )}
       />
     )
   }
-
-  //   <div className="quantity">
-  //   <p>Qty: </p>
-  //   <Input className="quantityInput" placeholder="20" />
-  // </div>
-  // <div className="totalSold">
-  //   <p>Total Sold: </p>
-  //   <Input disabled={true} className="totalSoldInput" placeholder="40" />
-  // </div>
 
   return (
     <BasicLayout>
@@ -157,213 +154,104 @@ const ProductPage = () => {
           enterButton
         />
         <SearchList />
-        {/* <Collapse defaultActiveKey={["1"]} onChange={onChange}>
-          <Panel header="Clothes" key="1">
-            <Collapse defaultActiveKey={["1"]} onChange={onChange}>
-              <Panel header="Tops" key="2">
-                <Space
-                  direction="vertical"
-                  size="middle"
-                  style={{ display: "flex" }}
+        <Collapse
+          // defaultActiveKey={["1"]} 
+          onChange={onChange}
+        >
+          {catSubcatProductData.map(function (category) {
+            return (
+              <Panel header={category.name} key={category._id}>
+                <Collapse
+                  // defaultActiveKey={["1"]} 
+                  onChange={onChange}
                 >
-                  <div className="itemDiv">
-                    <p className="itemName">Shirts</p>
-                    <div className="quantity">
-                      <p>Qty: </p>
-                      <Input className="quantityInput" placeholder="20" />
-                    </div>
-                    <div className="totalSold">
-                      <p>Total Sold: </p>
-                      <Input
-                        disabled={true}
-                        className="totalSoldInput"
-                        placeholder="40"
-                      />
-                    </div>
-                  </div>
-                  <div className="itemDiv">
-                    <p className="itemName">T-shirts</p>
-                    <div className="quantity">
-                      <p>Qty: </p>
-                      <Input className="quantityInput" placeholder="20" />
-                    </div>
-                    <div className="totalSold">
-                      <p>Total Sold: </p>
-                      <Input
-                        disabled={true}
-                        className="totalSoldInput"
-                        placeholder="40"
-                      />
-                    </div>
-                  </div>
-                </Space>
+                  {(category.subcategories).map(function (subcategories) {
+                    return (
+                      <Panel header={subcategories.name} key={subcategories._id}>
+                        <Space
+                          direction="vertical"
+                          size="middle"
+                          style={{ display: "flex" }}
+                        >
+                          {(subcategories.products).map(function (products) {
+                            return (
+                              <Fragment>
+                                <div
+                                  className="itemDiv"
+                                  key={products._id}
+                                >
+                                  <p className="itemName">{products.name}</p>
+                                  <Form.Provider
+                                    onFormFinish={(name, { forms }) => {
+                                      // Get the id from the formname
+                                      let id = name.substring(8);
+                                      // construct the field name
+                                      let priceFieldName = `price${id}`;
+                                      let stockFieldName = `stock${id}`;
+                                      // Get the price field value
+                                      let priceFieldValue = forms[name].getFieldValue(priceFieldName)
+                                      let stockFieldValue = forms[name].getFieldValue(stockFieldName)
+                                      console.log(id);
+                                      console.log(priceFieldValue);
+                                      console.log(stockFieldValue);
+
+                                      handleFormSubmit(id, priceFieldValue, stockFieldValue)
+                                    }}
+                                  >
+                                    <Form
+                                      {...layout}
+                                      name={`formname${products._id}`}
+                                      className="formDiv"
+                                    >
+                                      <Form.Item
+                                        name={`price${products._id}`}
+                                        label={`Price `}
+                                        initialValue={products.price}
+                                        rules={[
+                                          {
+                                            required: false,
+                                          },
+                                        ]}
+                                        className="priceFormDiv"
+                                      >
+                                        <Input />
+                                      </Form.Item>
+                                      <Form.Item
+                                        name={`stock${products._id}`}
+                                        label={`Stock `}
+                                        initialValue={products.stock}
+                                        rules={[
+                                          {
+                                            required: false,
+                                          },
+                                        ]}
+                                        className="stockFormDiv"
+                                      >
+                                        <Input />
+                                      </Form.Item>
+                                      <Form.Item>
+                                        <Button
+                                          htmlType="submit"
+                                          className="updateButton"
+                                        >Update</Button>
+                                      </Form.Item>
+                                    </Form>
+                                  </Form.Provider>
+                                </div>
+                              </Fragment>
+                            )
+                          })}
+                        </Space>
+                      </Panel>
+                    )
+                  })}
+                </Collapse>
               </Panel>
-            </Collapse>
-            <Collapse defaultActiveKey={["1"]} onChange={onChange}>
-              <Panel header="Bottoms" key="2">
-                <Space
-                  direction="vertical"
-                  size="middle"
-                  style={{ display: "flex" }}
-                >
-                  <div className="itemDiv">
-                    <p className="itemName">Jeans</p>
-                    <div className="quantity">
-                      <p>Qty: </p>
-                      <Input className="quantityInput" placeholder="20" />
-                    </div>
-                    <div className="totalSold">
-                      <p>Total Sold: </p>
-                      <Input
-                        disabled={true}
-                        className="totalSoldInput"
-                        placeholder="40"
-                      />
-                    </div>
-                  </div>
-                  <div className="itemDiv">
-                    <p className="itemName">Trousers</p>
-                    <div className="quantity">
-                      <p>Qty: </p>
-                      <Input className="quantityInput" placeholder="20" />
-                    </div>
-                    <div className="totalSold">
-                      <p>Total Sold: </p>
-                      <Input
-                        disabled={true}
-                        className="totalSoldInput"
-                        placeholder="40"
-                      />
-                    </div>
-                  </div>
-                </Space>
-              </Panel>
-            </Collapse>
-          </Panel>
-          <Panel header="Sports" key="3">
-            <Space
-              direction="vertical"
-              size="middle"
-              style={{ display: "flex" }}
-            >
-              <div className="itemDiv">
-                <p className="itemName">Leggings</p>
-                <div className="quantity">
-                  <p>Qty: </p>
-                  <Input className="quantityInput" placeholder="20" />
-                </div>
-                <div className="totalSold">
-                  <p>Total Sold: </p>
-                  <Input
-                    disabled={true}
-                    className="totalSoldInput"
-                    placeholder="40"
-                  />
-                </div>
-              </div>
-              <div className="itemDiv">
-                <p className="itemName">Tank Tops</p>
-                <div className="quantity">
-                  <p>Qty: </p>
-                  <Input className="quantityInput" placeholder="20" />
-                </div>
-                <div className="totalSold">
-                  <p>Total Sold: </p>
-                  <Input
-                    disabled={true}
-                    className="totalSoldInput"
-                    placeholder="40"
-                  />
-                </div>
-              </div>
-              <div className="itemDiv">
-                <p className="itemName">Shoes</p>
-                <div className="quantity">
-                  <p>Qty: </p>
-                  <Input className="quantityInput" placeholder="20" />
-                </div>
-                <div className="totalSold">
-                  <p>Total Sold: </p>
-                  <Input
-                    disabled={true}
-                    className="totalSoldInput"
-                    placeholder="40"
-                  />
-                </div>
-              </div>
-            </Space>
-          </Panel>
-          <Panel header="Jewellery" key="4">
-            <Space
-              direction="vertical"
-              size="middle"
-              style={{ display: "flex" }}
-            >
-              <div className="itemDiv">
-                <p className="itemName">Necklace</p>
-                <div className="quantity">
-                  <p>Qty: </p>
-                  <Input className="quantityInput" placeholder="20" />
-                </div>
-                <div className="totalSold">
-                  <p>Total Sold: </p>
-                  <Input
-                    disabled={true}
-                    className="totalSoldInput"
-                    placeholder="40"
-                  />
-                </div>
-              </div>
-              <div className="itemDiv">
-                <p className="itemName">Rings</p>
-                <div className="quantity">
-                  <p>Qty: </p>
-                  <Input className="quantityInput" placeholder="20" />
-                </div>
-                <div className="totalSold">
-                  <p>Total Sold: </p>
-                  <Input
-                    disabled={true}
-                    className="totalSoldInput"
-                    placeholder="40"
-                  />
-                </div>
-              </div>
-              <div className="itemDiv">
-                <p className="itemName">Earings</p>
-                <div className="quantity">
-                  <p>Qty: </p>
-                  <Input className="quantityInput" placeholder="20" />
-                </div>
-                <div className="totalSold">
-                  <p>Total Sold: </p>
-                  <Input
-                    disabled={true}
-                    className="totalSoldInput"
-                    placeholder="40"
-                  />
-                </div>
-              </div>
-              <div className="itemDiv">
-                <p className="itemName">Wrist bands</p>
-                <div className="quantity">
-                  <p>Qty: </p>
-                  <Input className="quantityInput" placeholder="20" />
-                </div>
-                <div className="totalSold">
-                  <p>Total Sold: </p>
-                  <Input
-                    disabled={true}
-                    className="totalSoldInput"
-                    placeholder="40"
-                  />
-                </div>
-              </div>
-            </Space>
-          </Panel>
-        </Collapse> */}
+            )
+          })}
+        </Collapse>
       </Space>
-    </BasicLayout>
+    </BasicLayout >
   );
 };
 

@@ -9,9 +9,11 @@ export const QUERY_CAT_SUBCAT_PRODUCT = gql`
         _id
         name
         products {
-          _id
           image
           name
+          price
+          stock
+          _id
         }
       }
     }
