@@ -3,6 +3,7 @@ import { Layout, Menu } from "antd";
 import "../styles/BasicLayout.css";
 import TopNavigation from "./TopNavigation";
 import SideNavigation from "./SideNavigation";
+import { useLocation } from 'react-router-dom'
 
 const { Header, Content } = Layout;
 
@@ -10,6 +11,7 @@ const { Header, Content } = Layout;
 
 const BasicLayout = ({ children, hello }) => {
   const [itemSelected, setItemSelected] = useState("Hey");
+  let location = useLocation();
 
   return (
     <Layout>
@@ -18,7 +20,10 @@ const BasicLayout = ({ children, hello }) => {
         <TopNavigation />
       </Header>
       <Layout>
-        <SideNavigation />
+        {!location.pathname.match(/products/) ? (
+          <SideNavigation />
+        ): (null)
+      }
         <Layout
           style={{
             padding: "0 24px 24px",

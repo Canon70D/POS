@@ -1,5 +1,15 @@
 import { gql } from "@apollo/client";
 
+export const UPDATE_PRODUCT_STOCK = gql`
+  mutation UpdateProduct($id: ID!, $price: Float!, $stock: Int!) {
+    updateProduct(_id: $id, price: $price, stock: $stock) {
+      _id
+      price
+      stock
+    }
+  }
+`;
+
 export const LOGIN = gql`
   mutation login($employeeId: String!, $password: String!) {
     login(employeeId: $employeeId, password: $password) {

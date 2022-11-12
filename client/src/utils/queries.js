@@ -1,5 +1,26 @@
 import { gql } from "@apollo/client";
 
+export const QUERY_CAT_SUBCAT_PRODUCT = gql`
+  query Categories {
+    categories {
+      name
+      _id
+      subcategories {
+        _id
+        name
+        products {
+          image
+          name
+          price
+          stock
+          _id
+        }
+      }
+    }
+  }
+`;
+
+
 export const QUERY_PRODUCT_BY_NAME = gql`
   query Product($name: String) {
     products(name: $name) {

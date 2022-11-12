@@ -56,12 +56,12 @@ const resolvers = {
       return Product.findOneAndDelete({ _id: productId });
     },
 
-    updateProduct: async (parent, { _id, quantity }) => {
-      const decrement = Math.abs(quantity) * -1;
+    updateProduct: async (parent, { _id, price, stock }) => {
+      const stockNumber = Math.abs(stock)
 
       return await Product.findByIdAndUpdate(
         _id,
-        { $inc: { quantity: decrement } },
+        { $set: { price: price, stock: stockNumber }},
         { new: true }
       );
     },

@@ -49,7 +49,8 @@ const typeDefs = gql`
     subCategoriesById(category: ID): [Subcategory]
     subcategories: [Subcategory]
     productById(subcategory: ID): [Product]
-    products: [Product]
+    productByName(name: String): [Product]
+    products(category: ID, name: String): [Product]
     orderById(_id: ID!): Order
     orders: [Order]
     user: User
@@ -64,7 +65,7 @@ const typeDefs = gql`
       subcategory: ID
     ): Product
     removeProduct(productId: ID!): Product
-    updateProduct(_id: ID!, quantity: Int!): Product
+    updateProduct(_id: ID!, price: Float!, stock: Int!): Product
     addCategory(name: String!): Category
     removeCategory(categoryId: ID!): Category
     addSubcategory(name: String!): Subcategory
