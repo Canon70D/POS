@@ -1,6 +1,16 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState } from "react";
 import BasicLayout from "../components/BasicLayout";
-import { Input, Collapse, Space, Card, List, Button } from "antd";
+import {
+  Input,
+  Collapse,
+  Space,
+  Card,
+  List,
+  Button,
+  Modal,
+  Form,
+  Select,
+} from "antd";
 import "./../styles/ProductPageLayout.css";
 import { useQuery } from "@apollo/client";
 import { QUERY_PRODUCT_BY_NAME } from "./../utils/queries";
@@ -9,8 +19,8 @@ const { Panel } = Collapse;
 const { Search } = Input;
 
 const ProductPage = () => {
+  const [popupModal, setPopupModal] = useState(false);
   const [productName, setProductName] = useState(0);
-
 
   const { data: QUERY_PRODUCT_BY_NAME_DATA } = useQuery(QUERY_PRODUCT_BY_NAME, {
     variables: { name: productName },
@@ -30,16 +40,15 @@ const ProductPage = () => {
   };
 
   const onSearch = async function (name) {
-    setProductName(name)
+    setProductName(name);
     console.log(name);
     console.log(productName);
     console.log(productByNameData);
-  }
+  };
 
   const onClickUpdateButton = (e) => {
     console.log("Clicked update button");
   };
-  
 
   const SearchList = () => {
     return (
@@ -54,11 +63,12 @@ const ProductPage = () => {
           xxl: 6,
         }}
         dataSource={productByNameData}
-        renderItem={item => (
+        renderItem={(item) => (
           <List.Item>
             <Card title={item.name}>
               <div className="price">
-                <div><b>Price: </b>
+                <div>
+                  <b>Price: </b>
                 </div>
                 <Input
                   className="priceInput"
@@ -67,7 +77,8 @@ const ProductPage = () => {
                 />
               </div>
               <div className="stock">
-                <div><b>Stock: </b>
+                <div>
+                  <b>Stock: </b>
                 </div>
                 <Input
                   className="stockInput"
@@ -87,8 +98,8 @@ const ProductPage = () => {
           </List.Item>
         )}
       />
-    )
-  }
+    );
+  };
 
   //   <div className="quantity">
   //   <p>Qty: </p>
@@ -315,6 +326,53 @@ const ProductPage = () => {
           </Panel>
         </Collapse>
       </Space>
+
+      {/* a button and a pop modal for add new product, need to be fixed to useMusation to save data to db, need a function for form when onFinish */}
+      <Button type="primary" onClick={() => setPopupModal(true)}>
+        Add Product
+      </Button>
+      <Modal
+        title={"Add New Product"}
+        visible={popupModal}
+        onCancel={() => {
+          setPopupModal(false);
+        }}
+        footer={false}
+      >
+        <Form layout="vertical">
+          <Form.Item name="name" label="Name">
+            <Input />
+          </Form.Item>
+          <Form.Item name="price" label="Price">
+            <Input />
+          </Form.Item>
+          <Form.Item name="stock" label="Stock">
+            <Input />
+          </Form.Item>
+          <Form.Item name="image" label="Image URL">
+            <Input />
+          </Form.Item>
+          <Form.Item name="category" label="Category">
+            <Select>
+              <Select.Option value="apparel">Apparel</Select.Option>
+              <Select.Option value="sneakers">Sneakers</Select.Option>
+              <Select.Option value="accessories">Accessories</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="subcategory" label="subcategory">
+            <Select>
+              <Select.Option value=""></Select.Option>
+              <Select.Option value=""></Select.Option>
+              <Select.Option value=""></Select.Option>
+            </Select>
+          </Form.Item>
+          <div className="d-flex justify-content-end">
+            <Button type="primary" htmlType="submit">
+              SAVE
+            </Button>
+          </div>
+        </Form>
+      </Modal>
     </BasicLayout>
   );
 };

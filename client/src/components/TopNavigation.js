@@ -11,13 +11,16 @@ const TopNavigation = () => (
     // items={items1}
   >
     <Menu.Item key="/">
-      <Link to="/">Home</Link>
+      <Link to="/home">Home</Link>
     </Menu.Item>
     <Menu.Item key="/products">
       <Link to="/products">Products</Link>
     </Menu.Item>
-    <Menu.Item key="/customers">
-      <Link to="/customers">Customers</Link>
+    <Menu.Item key="/customer">
+      <Link to="/customer">Customers</Link>
+    </Menu.Item>
+    <Menu.Item key="/invoice">
+      <Link to="/invoice">Invoices</Link>
     </Menu.Item>
     <Menu.Item key="/logout">
       {" "}
