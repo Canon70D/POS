@@ -1,6 +1,7 @@
 const { User, Category, Subcategory, Product, Order } = require("../models");
 const { AuthenticationError } = require("apollo-server-express");
 const { signToken } = require("../utils/auth");
+const { async } = require("rxjs");
 
 const resolvers = {
   Query: {
@@ -38,6 +39,12 @@ const resolvers = {
 
       return await Product.find(params);
     },
+    orders: async () => {
+      return await Order.find({}).populate("products");
+    },
+    orderById: async (parent, { _id }) => {
+      return await Order.findById(_id);
+    },
   },
 
   Mutation: {
@@ -74,6 +81,10 @@ const resolvers = {
     removeSubcategory: async (parent, { subcategoryId }) => {
       return Subcategory.findOneAndDelete({ _id: subcategoryId });
     },
+
+    // addOrder: async (parent, { products }) => {
+    //   return await Order.create({ products });
+    // },
 
     addUser: async (parent, { name, employeeId, password }) => {
       const user = await User.create({ name, employeeId, password });

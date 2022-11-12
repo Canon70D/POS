@@ -1,6 +1,16 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState } from "react";
 import BasicLayout from "../components/BasicLayout";
-import { Input, Collapse, Space, Card, List, Button, Form } from "antd";
+import {
+  Input,
+  Collapse,
+  Space,
+  Card,
+  List,
+  Button,
+  Modal,
+  Form,
+  Select,
+} from "antd";
 import "./../styles/ProductPageLayout.css";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_PRODUCT_BY_NAME, QUERY_CAT_SUBCAT_PRODUCT } from "./../utils/queries";
@@ -10,6 +20,7 @@ const { Panel } = Collapse;
 const { Search } = Input;
 
 const ProductPage = () => {
+  const [popupModal, setPopupModal] = useState(false);
 
   // State for search parameter
   const [productName, setProductName] = useState(0);
@@ -251,7 +262,54 @@ const ProductPage = () => {
           })}
         </Collapse>
       </Space>
-    </BasicLayout >
+
+      {/* a button and a pop modal for add new product, need to be fixed to useMusation to save data to db, need a function for form when onFinish */}
+      <Button type="primary" onClick={() => setPopupModal(true)}>
+        Add Product
+      </Button>
+      <Modal
+        title={"Add New Product"}
+        visible={popupModal}
+        onCancel={() => {
+          setPopupModal(false);
+        }}
+        footer={false}
+      >
+        <Form layout="vertical">
+          <Form.Item name="name" label="Name">
+            <Input />
+          </Form.Item>
+          <Form.Item name="price" label="Price">
+            <Input />
+          </Form.Item>
+          <Form.Item name="stock" label="Stock">
+            <Input />
+          </Form.Item>
+          <Form.Item name="image" label="Image URL">
+            <Input />
+          </Form.Item>
+          <Form.Item name="category" label="Category">
+            <Select>
+              <Select.Option value="apparel">Apparel</Select.Option>
+              <Select.Option value="sneakers">Sneakers</Select.Option>
+              <Select.Option value="accessories">Accessories</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="subcategory" label="subcategory">
+            <Select>
+              <Select.Option value=""></Select.Option>
+              <Select.Option value=""></Select.Option>
+              <Select.Option value=""></Select.Option>
+            </Select>
+          </Form.Item>
+          <div className="d-flex justify-content-end">
+            <Button type="primary" htmlType="submit">
+              SAVE
+            </Button>
+          </div>
+        </Form>
+      </Modal>
+    </BasicLayout>
   );
 };
 
