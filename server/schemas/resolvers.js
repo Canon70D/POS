@@ -43,7 +43,7 @@ const resolvers = {
       return await Order.find({}).populate("products");
     },
     orderById: async (parent, { _id }) => {
-      return await Order.findById(_id);
+      return await Order.findById(_id).populate("products");
     },
   },
 

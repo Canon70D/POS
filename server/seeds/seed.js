@@ -324,14 +324,26 @@ db.once("open", async () => {
 
   await Order.deleteMany();
 
-  await Order.create({
-    customerName: "test name",
-    customerNumber: 123456789,
-    paymentMode: "Card",
-    total: 1000,
-    grandTotal: 1100,
-    tax: 100,
-  });
+  await Order.insertMany([
+    {
+      customerName: "Daisy Green",
+      customerNumber: 123456789,
+      paymentMode: "Card",
+      total: 404.55,
+      grandTotal: 445,
+      tax: 40.45,
+      products: [products[3]._id, products[22]._id]
+    },
+    {
+      customerName: "James Howard",
+      customerNumber: 123456788,
+      paymentMode: "Card",
+      total: 281.73,
+      grandTotal: 309.90,
+      tax: 28.17,
+      products: [products[6]._id, products[12]._id]
+    },
+ ]);
 
   console.log("==================");
   console.log("order seeded");
