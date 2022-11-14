@@ -10,15 +10,12 @@ import "../styles/InvoiceStyle.css";
 const InvoicePage = () => {
   const componentRef = useRef();
   const [invoiceModal, setInvoiceModal] = useState(false);
-  const [selectedInv, setSelectedInv] = useState(null);
 
-  //having problem loading data to the page ....
+  const { data } = useQuery(QUERY_ORDERS);
+  const invoiceData = data?.orders || [];
+  console.log("All invoices data ", invoiceData);
 
-  //need to get invoices data (order model), need to be fixed
-  // const { data } = useQuery(QUERY_ORDERS);
-  // console.log("this is a ", data);
-  // const invoiceData = data?.orders || [];
-  // console.log("this is another ", invoiceData);
+  const [selectedInv, setSelectedInv] = useState(invoiceData[0]);
 
   //print function
   const handlePrint = useReactToPrint({
@@ -52,7 +49,7 @@ const InvoicePage = () => {
       ),
     },
   ];
-  console.log("this is third ", selectedInv);
+  console.log("Selected invoice ", selectedInv);
 
   return (
     <BasicLayout>
@@ -60,7 +57,7 @@ const InvoicePage = () => {
         <h1>Invoice list</h1>
       </div>
       {/* ============ need dataSource={data} for the table ==============  */}
-      <Table columns={columns} bordered />
+      <Table columns={columns} dataSource={invoiceData} bordered />
 
       <Modal
         width={400}
@@ -85,11 +82,12 @@ const InvoicePage = () => {
             <div className="mt-2">
               {/*need to load data here*/}
               <p>
-                Customer Name : {/*<b>{selectedInv.customerName}</b> */}
+                Customer Name : <b>{selectedInv.customerName}</b>
                 <br />
-                Phone No : {/*<b>{selectedInv.customerNumber}</b> */}
+                Phone No : <b>{selectedInv.customerNumber}</b>
                 <br />
-                Date : {/*<b>{oneInv.date.toString().substring(0, 10)}</b> */}
+                Date :{" "}
+                <b>{selectedInv.purchaseDate.toString().substring(0, 10)}</b>
                 <br />
               </p>
               <hr style={{ margin: "5px" }} />
@@ -104,37 +102,29 @@ const InvoicePage = () => {
                     <td className="item">
                       <h2>Item</h2>
                     </td>
-                    <td className="Hours">
-                      <h2>Qty</h2>
-                    </td>
                     <td className="Rate">
                       <h2>Price</h2>
                     </td>
                     <td className="Rate">
-                      <h2>Total</h2>
+                      <h2></h2>
+                    </td>
+                    <td className="Rate">
+                      <h2></h2>
                     </td>
                   </tr>
-                  {/* data loading problem as well */}
-                  {/* {selectedInv.cartProducts.map((item) => (
+
+                  {selectedInv.products.map((item) => (
                     <>
                       <tr className="service">
                         <td className="tableitem">
                           <p className="itemtext">{item.name}</p>
                         </td>
                         <td className="tableitem">
-                          <p className="itemtext">{item.quantity}</p>
-                        </td>
-                        <td className="tableitem">
                           <p className="itemtext">{item.price}</p>
-                        </td>
-                        <td className="tableitem">
-                          <p className="itemtext">
-                            {item.quantity * item.price}
-                          </p>
                         </td>
                       </tr>
                     </>
-                  ))} */}
+                  ))}
 
                   <tr className="tabletitle">
                     <td />
@@ -143,7 +133,7 @@ const InvoicePage = () => {
                       <h2>tax</h2>
                     </td>
                     <td className="payment">
-                      {/* <h2>${selectedInv.tax}</h2> */}
+                      <h2>${selectedInv.tax}</h2>
                     </td>
                   </tr>
                   <tr className="tabletitle">
@@ -153,7 +143,10 @@ const InvoicePage = () => {
                       <h2>Grand Total</h2>
                     </td>
                     <td className="payment">
-                      <h2>{/* <b>${selectedInv.grandTotal}</b> */}</h2>
+                      <h2>
+                        {" "}
+                        <b>${selectedInv.grandTotal}</b>{" "}
+                      </h2>
                     </td>
                   </tr>
                 </tbody>
