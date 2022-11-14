@@ -76,3 +76,21 @@ export const REMOVE_PRODUCT = gql`
     }
   }
 `;
+
+export const ADD_ORDER = gql`
+  mutation Mutation($products: [ID]!) {
+    addOrder(products: $products) {
+      customerName
+      customerNumber
+      total
+      tax
+      grandTotal
+      paymentMode
+      purchaseDate
+      products {
+        name
+        price
+      }
+    }
+  }
+`;

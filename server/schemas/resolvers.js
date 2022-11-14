@@ -57,11 +57,11 @@ const resolvers = {
     },
 
     updateProduct: async (parent, { _id, price, stock }) => {
-      const stockNumber = Math.abs(stock)
+      const stockNumber = Math.abs(stock);
 
       return await Product.findByIdAndUpdate(
         _id,
-        { $set: { price: price, stock: stockNumber }},
+        { $set: { price: price, stock: stockNumber } },
         { new: true }
       );
     },
@@ -82,9 +82,9 @@ const resolvers = {
       return Subcategory.findOneAndDelete({ _id: subcategoryId });
     },
 
-    // addOrder: async (parent, { products }) => {
-    //   return await Order.create({ products });
-    // },
+    addOrder: async (parent, { products }) => {
+      return await Order.create({ products });
+    },
 
     addUser: async (parent, { name, employeeId, password }) => {
       const user = await User.create({ name, employeeId, password });

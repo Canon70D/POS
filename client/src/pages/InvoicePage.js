@@ -106,10 +106,10 @@ const InvoicePage = () => {
                       <h2>Price</h2>
                     </td>
                     <td className="Rate">
-                      <h2></h2>
+                      <h2>Quantity</h2>
                     </td>
                     <td className="Rate">
-                      <h2></h2>
+                      <h2>Total</h2>
                     </td>
                   </tr>
 

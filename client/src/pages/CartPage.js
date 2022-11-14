@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 import BasicLayout from "../components/BasicLayout";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -6,9 +7,12 @@ import {
   PlusCircleOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons";
-import { Button, Modal, Table, Form, Select, Input } from "antd";
+import { Button, Modal, Table, Form, Select, Input, message } from "antd";
+import { useMutation } from "@apollo/client";
+import { ADD_ORDER } from "../utils/mutations";
 
 const CartPage = () => {
+  const navigate = useNavigate();
   const [total, setTotal] = useState(0);
   const [totalPopup, setTotalPopup] = useState(false);
 
@@ -92,17 +96,24 @@ const CartPage = () => {
   //need to be fixed, can only get the object now
   //have not applied useMutation
   //also, cart is not saved, refresh page would clear the cart
-  const handleSubmit = (value) => {
-    const newObject = {
-      ...value,
-      cartProducts,
-      total,
-      tax: Number(((total / 100) * 10).toFixed(2)),
-      grandTotal: Number(
-        Number(total) + Number(((total / 100) * 10).toFixed(2))
-      ),
-    };
-    console.log(newObject);
+  const [addInvoice, { error }] = useMutation(ADD_ORDER);
+  const handleSubmit = async (value) => {
+    try {
+      const newObj = {
+        ...value,
+        cartProducts,
+        total,
+        tax: Number(((total / 100) * 10).toFixed(2)),
+        grandTotal: Number(
+          Number(total) + Number(((total / 100) * 10).toFixed(2))
+        ),
+      };
+      console.log("this is new invoice :", newObj);
+      //message.success("Bill Generated");
+      // navigate("/invoice");
+    } catch (err) {
+      message.error(err);
+    }
   };
 
   return (
