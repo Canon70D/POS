@@ -52,16 +52,16 @@ const CartPage = () => {
       dataIndex: "_id",
       render: (id, record) => (
         <div>
-          <PlusCircleOutlined
-            className="mx-3"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleIncreament(record)}
-          />
-          <b>{record.quantity}</b>
           <MinusCircleOutlined
             className="mx-3"
             style={{ cursor: "pointer" }}
             onClick={() => handleDecreament(record)}
+          />
+          <b>{record.quantity}</b>
+          <PlusCircleOutlined
+            className="mx-3"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleIncreament(record)}
           />
         </div>
       ),

@@ -33,10 +33,9 @@ const resolvers = {
 
       if (name) {
         params.name = {
-          $regex: name,
+          $regex : new RegExp(name, "i"),
         };
       }
-
       return await Product.find(params);
     },
     orders: async () => {
