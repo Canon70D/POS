@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import BasicLayout from "../components/BasicLayout";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -106,7 +106,8 @@ const CartPage = () => {
   };
 
   return (
-    <BasicLayout>
+    // <BasicLayout>
+    <Fragment>
       <h1>Cart Page</h1>
       <Table columns={columns} dataSource={cartProducts} bordered />
       <div className="d-flex flex-column alig-item-end">
@@ -156,7 +157,8 @@ const CartPage = () => {
           </div>
         </Form>
       </Modal>
-    </BasicLayout>
+    </Fragment>
+    // </BasicLayout>
   );
 };
 

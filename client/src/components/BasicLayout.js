@@ -20,7 +20,7 @@ const BasicLayout = ({ children, hello }) => {
         <TopNavigation />
       </Header>
       <Layout>
-        {!location.pathname.match(/products/) ? (
+        {location.pathname.match(/home/) ? (
           <SideNavigation />
         ): (null)
       }
