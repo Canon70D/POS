@@ -3,6 +3,8 @@ const intialState = {
   cartProducts: [],
 };
 
+console.log(intialState.cartProducts);
+
 export const rootReducer = (state = intialState, action) => {
   switch (action.type) {
     case "ADD_TO_CART":
