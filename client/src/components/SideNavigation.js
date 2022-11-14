@@ -22,6 +22,7 @@ const SideNavigation = () => {
   // Execute the query on component load
   const { data: QUERY_CAT_SUBCAT_PRODUCT_DATA } = useQuery(QUERY_CAT_SUBCAT_PRODUCT);
   const categoryData = QUERY_CAT_SUBCAT_PRODUCT_DATA?.categories || [];
+  const [collapsed, setCollapsed] = useState(false);
 
 
   const clickOnMenuItem = (id, product) => {
@@ -57,6 +58,8 @@ const SideNavigation = () => {
             <SubMenu
               key={category._id}
               title={category.name}
+              collapsible collapsed={collapsed} 
+              onCollapse={(value) => setCollapsed(value)}
             // onTitleClick={() => clickOnMenu(category._id)}
             >
               {(category.subcategories).map(function (subcategories) {
