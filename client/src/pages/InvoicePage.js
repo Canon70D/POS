@@ -82,12 +82,12 @@ const InvoicePage = () => {
             <div className="mt-2">
               {/*need to load data here*/}
               <p>
-                Customer Name : <b>{selectedInv.customerName}</b>
+                Customer Name : <b>{selectedInv?.customerName}</b>
                 <br />
-                Phone No : <b>{selectedInv.customerNumber}</b>
+                Phone No : <b>{selectedInv?.customerNumber}</b>
                 <br />
                 Date :{" "}
-                <b>{selectedInv.purchaseDate.toString().substring(0, 10)}</b>
+                <b>{selectedInv?.purchaseDate.toString().substring(0, 10)}</b>
                 <br />
               </p>
               <hr style={{ margin: "5px" }} />
@@ -113,7 +113,7 @@ const InvoicePage = () => {
                     </td>
                   </tr>
 
-                  {selectedInv.products.map((item) => (
+                  {selectedInv?.products.map((item) => (
                     <>
                       <tr className="service">
                         <td className="tableitem">
@@ -133,7 +133,7 @@ const InvoicePage = () => {
                       <h2>tax</h2>
                     </td>
                     <td className="payment">
-                      <h2>${selectedInv.tax}</h2>
+                      <h2>${selectedInv?.tax}</h2>
                     </td>
                   </tr>
                   <tr className="tabletitle">
@@ -145,7 +145,7 @@ const InvoicePage = () => {
                     <td className="payment">
                       <h2>
                         {" "}
-                        <b>${selectedInv.grandTotal}</b>{" "}
+                        <b>${selectedInv?.grandTotal}</b>{" "}
                       </h2>
                     </td>
                   </tr>
