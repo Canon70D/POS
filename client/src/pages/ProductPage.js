@@ -14,7 +14,7 @@ import {
 import "./../styles/ProductPageLayout.css";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_PRODUCT_BY_NAME, QUERY_CAT_SUBCAT_PRODUCT } from "./../utils/queries";
-import { UPDATE_PRODUCT_STOCK } from "./../utils/mutations";
+import { UPDATE_PRODUCT_STOCK, ADD_PRODUCT } from "./../utils/mutations";
 
 const { Panel } = Collapse;
 const { Search } = Input;
@@ -24,6 +24,15 @@ const ProductPage = () => {
 
   // State for search parameter
   const [productName, setProductName] = useState(0);
+
+  // State for add product category selection
+  const [addProductCat, setAddProductCat] = useState("");
+
+  // State for add product sub category selection
+  const [addProductSubCat, setAddProductSubCat] = useState("");
+
+  // State for add product save form text
+  const [addProductSaveText, setAddProductSaveText] = useState('Save');
 
   // Query for product name with a variable
   const { data: QUERY_PRODUCT_BY_NAME_DATA } = useQuery(QUERY_PRODUCT_BY_NAME, {
@@ -37,6 +46,9 @@ const ProductPage = () => {
 
   // Mutation to update product information: price and stock
   const [updateStock] = useMutation(UPDATE_PRODUCT_STOCK);
+
+  // Mutation to add a new product
+  const [addProduct] = useMutation(ADD_PRODUCT);
 
 
 
@@ -59,7 +71,7 @@ const ProductPage = () => {
       setProductName(0)
     } else {
       setProductName(name)
-    }    
+    }
   }
 
   const onChange = async function (value) {
@@ -84,9 +96,9 @@ const ProductPage = () => {
           xs: 1,
           sm: 2,
           md: 2,
-          lg: 4,
-          xl: 5,
-          xxl: 6,
+          lg: 3,
+          xl: 4,
+          xxl: 4,
         }}
         dataSource={productByNameData}
         renderItem={item => (
@@ -141,7 +153,7 @@ const ProductPage = () => {
                   <Form.Item>
                     <Button
                       htmlType="submit"
-                      className="updateButton"
+                      className="updateSearchButton"
                     >
                       Update
                     </Button>
@@ -154,6 +166,62 @@ const ProductPage = () => {
       />
     )
   }
+
+  const addProductClickCat = (value, option) => {
+    let catId = value.replace("addProductCat", "")
+    setAddProductCat(catId)
+    console.log(addProductCat);
+  }
+
+  const addProductClickSubCat = (value, option) => {
+    let subCatId = value.replace("addProductSubCat", "")
+    setAddProductSubCat(subCatId)
+    console.log(addProductSubCat);
+  }
+
+  const handleAddProductFormSubmit =
+    async (
+      addProductNameValue,
+      addProductPriceValue,
+      addProductStockValue,
+      addProductImageValue,
+      addProductCatValue,
+      addProductSubCatValue
+    ) => {
+
+      let addProductObj = {
+        "name": addProductNameValue,
+        "stock": parseFloat(addProductStockValue),
+        "price": parseFloat(addProductPriceValue),
+        "image": addProductImageValue,
+        "subcategory": addProductSubCatValue.replace("addProductSubCat", "")
+      }
+
+      const addProductMutationResponse = await addProduct({
+        variables: addProductObj
+      });
+
+      console.log(addProductMutationResponse);
+      setAddProductSaveText("Saved!")
+    }
+
+  // const newObject = {
+  //   ...value,
+  //   products,
+  //   total,
+  //   tax: Number(((total / 100) * 10).toFixed(2)),
+  //   grandTotal: Number(
+  //     Number(total) + Number(((total / 100) * 10).toFixed(2))
+  //   ),
+  // };
+
+  // const mutationResponse = await updateStock({
+  //   variables: newObject
+  // });
+  // console.log(newObject);
+  // console.log(mutationResponse);
+
+
 
   return (
     <BasicLayout>
@@ -243,7 +311,7 @@ const ProductPage = () => {
                                       <Form.Item>
                                         <Button
                                           htmlType="submit"
-                                          className="updateButton"
+                                          className="updateTreeButton"
                                         >Update</Button>
                                       </Form.Item>
                                     </Form>
@@ -264,7 +332,11 @@ const ProductPage = () => {
       </Space>
 
       {/* a button and a pop modal for add new product, need to be fixed to useMusation to save data to db, need a function for form when onFinish */}
-      <Button type="primary" onClick={() => setPopupModal(true)}>
+      <Button 
+      type="primary" 
+      onClick={() => setPopupModal(true)}
+      id="addProductModalButton"
+      >
         Add Product
       </Button>
       <Modal
@@ -275,39 +347,91 @@ const ProductPage = () => {
         }}
         footer={false}
       >
-        <Form layout="vertical">
-          <Form.Item name="name" label="Name">
-            <Input />
-          </Form.Item>
-          <Form.Item name="price" label="Price">
-            <Input />
-          </Form.Item>
-          <Form.Item name="stock" label="Stock">
-            <Input />
-          </Form.Item>
-          <Form.Item name="image" label="Image URL">
-            <Input />
-          </Form.Item>
-          <Form.Item name="category" label="Category">
-            <Select>
-              <Select.Option value="apparel">Apparel</Select.Option>
-              <Select.Option value="sneakers">Sneakers</Select.Option>
-              <Select.Option value="accessories">Accessories</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item name="subcategory" label="subcategory">
-            <Select>
-              <Select.Option value=""></Select.Option>
-              <Select.Option value=""></Select.Option>
-              <Select.Option value=""></Select.Option>
-            </Select>
-          </Form.Item>
-          <div className="d-flex justify-content-end">
-            <Button type="primary" htmlType="submit">
-              SAVE
-            </Button>
-          </div>
-        </Form>
+        <Form.Provider
+          onFormFinish={(name, { forms }) => {
+            // Get the field values
+            let addProductNameValue = forms[name].getFieldValue("addProductName")
+            let addProductPriceValue = forms[name].getFieldValue("addProductPrice")
+            let addProductStockValue = forms[name].getFieldValue("addProductStock")
+            let addProductImageValue = forms[name].getFieldValue("addProductImage")
+            let addProductCatValue = forms[name].getFieldValue("addProductCat")
+            let addProductSubCatValue = forms[name].getFieldValue("addProductSubCat")
+
+            handleAddProductFormSubmit(
+              addProductNameValue,
+              addProductPriceValue,
+              addProductStockValue,
+              addProductImageValue,
+              addProductCatValue,
+              addProductSubCatValue
+            )
+          }}
+        >
+          <Form
+            layout="vertical"
+            name="addProductForm"
+          >
+            <Form.Item name="addProductName" label="Name">
+              <Input />
+            </Form.Item>
+            <Form.Item name="addProductPrice" label="Price">
+              <Input />
+            </Form.Item>
+            <Form.Item name="addProductStock" label="Stock">
+              <Input />
+            </Form.Item>
+            <Form.Item name="addProductImage" label="Image URL">
+              <Input />
+            </Form.Item>
+            <Form.Item name="addProductCat" label="Category">
+              <Select
+                onChange={(value, option) => addProductClickCat(value, option)}
+              >
+                {catSubcatProductData.map(function (category) {
+                  return (
+                    <Fragment>
+                      <Select.Option
+                        key={`addProductCat${category._id}`}
+                      >
+                        {category.name}
+                      </Select.Option>
+                    </Fragment>
+                  )
+                })}
+              </Select>
+            </Form.Item>
+            <Form.Item name="addProductSubCat" label="subcategory">
+              <Select
+                onChange={(value, option) => addProductClickSubCat(value, option)}
+              >
+                {catSubcatProductData.map(function (category) {
+                  {
+                    if (category._id === addProductCat) {
+                      return (
+                        (category.subcategories).map(function (subcategories) {
+                          return (
+                            <Fragment>
+                              <Select.Option
+                                key={`addProductSubCat${subcategories._id}`}
+                              >
+                                {subcategories.name}
+                              </Select.Option>
+                            </Fragment>
+                          )
+                        })
+                      )
+                    }
+                  }
+                })}
+              </Select>
+            </Form.Item>
+            <div className="d-flex justify-content-end">
+              <Button type="primary" htmlType="submit">
+                {addProductSaveText}
+              </Button>
+            </div>
+          </Form>
+        </Form.Provider>
       </Modal>
     </BasicLayout>
   );

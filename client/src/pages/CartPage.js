@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 import BasicLayout from "../components/BasicLayout";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -7,14 +8,20 @@ import {
   MinusCircleOutlined,
 } from "@ant-design/icons";
 import { Button, Modal, Table, Form, Select, Input } from "antd";
+import { useMutation } from "@apollo/client";
+import { ADD_ORDER } from "./../utils/mutations";
 
 const CartPage = () => {
+  const navigate = useNavigate();
   const [total, setTotal] = useState(0);
   const [totalPopup, setTotalPopup] = useState(false);
 
   const dispatch = useDispatch();
 
   const { cartProducts } = useSelector((state) => state.rootReducer);
+
+  // Mutation to create invoice
+  const [updateStock] = useMutation(ADD_ORDER);
 
   //handle increament
   const handleIncreament = (record) => {
@@ -88,21 +95,36 @@ const CartPage = () => {
     setTotal(sum);
   }, [cartProducts]);
 
-  //handle the form submit
-  //need to be fixed, can only get the object now
-  //have not applied useMutation
-  //also, cart is not saved, refresh page would clear the cart
-  const handleSubmit = (value) => {
+
+  // Cart is not saved, refresh page would clear the cart
+  const handleSubmit = async (value) => {
+    // Set the types
+    value.customerNumber = parseFloat(value.customerNumber);
+
+    let products = [];
+    let productsIdObj = {};
+
+    cartProducts.map((item) => {
+      productsIdObj = {"_id": item._id}
+      products.push(productsIdObj)
+    })
+
     const newObject = {
       ...value,
-      cartProducts,
+      products,
       total,
       tax: Number(((total / 100) * 10).toFixed(2)),
       grandTotal: Number(
         Number(total) + Number(((total / 100) * 10).toFixed(2))
       ),
     };
+
+    const mutationResponse = await updateStock({
+      variables: newObject
+    });
     console.log(newObject);
+    console.log(mutationResponse);
+    window.location.replace("/invoice") // Hacky solution to re-render invoice page. normally use navigate("/invoice");
   };
 
   return (
@@ -129,7 +151,10 @@ const CartPage = () => {
           <Form.Item name="customerName" label="Customer Name">
             <Input />
           </Form.Item>
-          <Form.Item name="customerNumber" label="Contact Number">
+          <Form.Item 
+          name="customerNumber" 
+          label="Contact Number"
+          >
             <Input />
           </Form.Item>
           <Form.Item name="paymentMode" label="Payment Method">

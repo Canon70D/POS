@@ -4,7 +4,7 @@ import { EyeOutlined } from "@ant-design/icons";
 import { useReactToPrint } from "react-to-print";
 import { Modal, Button, Table } from "antd";
 import { useQuery } from "@apollo/client";
-import { QUERY_ORDERS } from "../utils/queries";
+import { QUERY_ORDERS, QUERY_CAT_SUBCAT_PRODUCT } from "./../utils/queries"
 import "../styles/InvoiceStyle.css";
 
 const InvoicePage = () => {
@@ -13,7 +13,9 @@ const InvoicePage = () => {
 
   const { data } = useQuery(QUERY_ORDERS);
   const invoiceData = data?.orders || [];
-  console.log("All invoices data ", invoiceData);
+
+
+  // console.log("All invoices data ", invoiceData);
 
   const [selectedInv, setSelectedInv] = useState(invoiceData[0]);
 
@@ -49,7 +51,8 @@ const InvoicePage = () => {
       ),
     },
   ];
-  console.log("Selected invoice ", selectedInv);
+
+  // console.log("Selected invoice ", selectedInv);
 
   return (
     <BasicLayout>

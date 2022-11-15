@@ -1,5 +1,13 @@
 import { gql } from "@apollo/client";
 
+export const ADD_ORDER = gql`
+  mutation AddOrder($customerName: String!, $customerNumber: Float!, $total: Float!, $grandTotal: Float!, $tax: Float!, $paymentMode: String!, $products: [ProductInput!]) {
+    addOrder(customerName: $customerName, customerNumber: $customerNumber, total: $total, grandTotal: $grandTotal, tax: $tax, paymentMode: $paymentMode, products: $products) {
+      _id
+    }
+  }
+`;
+
 export const UPDATE_PRODUCT_STOCK = gql`
   mutation UpdateProduct($id: ID!, $price: Float!, $stock: Int!) {
     updateProduct(_id: $id, price: $price, stock: $stock) {
@@ -53,18 +61,20 @@ export const REMOVE_CATEGORY = gql`
 export const ADD_PRODUCT = gql`
   mutation Mutation(
     $name: String!
-    $price: Float!
     $stock: Int!
-    $category: ID
+    $price: Float!
+    $image: String
+    $subcategory: ID
   ) {
-    addProduct(name: $name, price: $price, stock: $stock, category: $category) {
+    addProduct(
+      name: $name
+      stock: $stock
+      price: $price
+      image: $image
+      subcategory: $subcategory
+    ) {
+      _id
       name
-      price
-      stock
-      image
-      category {
-        _id
-      }
     }
   }
 `;

@@ -39,7 +39,7 @@ const resolvers = {
       return await Product.find(params);
     },
     orders: async () => {
-      return await Order.find({}).populate("products");
+      return await Order.find({}).sort({purchaseDate: 'desc'}).populate("products");
     },
     orderById: async (parent, { _id }) => {
       return await Order.findById(_id).populate("products");
@@ -81,9 +81,9 @@ const resolvers = {
       return Subcategory.findOneAndDelete({ _id: subcategoryId });
     },
 
-    // addOrder: async (parent, { products }) => {
-    //   return await Order.create({ products });
-    // },
+    addOrder: async (parent, { customerName, customerNumber, paymentMode, total, grandTotal, tax, products }) => {
+      return await Order.create({ customerName, customerNumber, paymentMode, total, grandTotal, tax, products });
+    },
 
     addUser: async (parent, { name, employeeId, password }) => {
       const user = await User.create({ name, employeeId, password });
