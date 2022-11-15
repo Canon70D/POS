@@ -4,7 +4,7 @@ import { EyeOutlined } from "@ant-design/icons";
 import { useReactToPrint } from "react-to-print";
 import { Modal, Button, Table } from "antd";
 import { useQuery } from "@apollo/client";
-import { QUERY_ORDERS } from "../utils/queries";
+import { QUERY_ORDERS, QUERY_CAT_SUBCAT_PRODUCT } from "./../utils/queries"
 import "../styles/InvoiceStyle.css";
 
 const InvoicePage = () => {
@@ -13,7 +13,9 @@ const InvoicePage = () => {
 
   const { data } = useQuery(QUERY_ORDERS);
   const invoiceData = data?.orders || [];
-  console.log("All invoices data ", invoiceData);
+
+
+  // console.log("All invoices data ", invoiceData);
 
   const [selectedInv, setSelectedInv] = useState(invoiceData[0]);
 
@@ -49,7 +51,8 @@ const InvoicePage = () => {
       ),
     },
   ];
-  console.log("Selected invoice ", selectedInv);
+
+  // console.log("Selected invoice ", selectedInv);
 
   return (
     <BasicLayout>
@@ -82,12 +85,12 @@ const InvoicePage = () => {
             <div className="mt-2">
               {/*need to load data here*/}
               <p>
-                Customer Name : <b>{selectedInv.customerName}</b>
+                Customer Name : <b>{selectedInv?.customerName}</b>
                 <br />
-                Phone No : <b>{selectedInv.customerNumber}</b>
+                Phone No : <b>{selectedInv?.customerNumber}</b>
                 <br />
                 Date :{" "}
-                <b>{selectedInv.purchaseDate.toString().substring(0, 10)}</b>
+                <b>{selectedInv?.purchaseDate.toString().substring(0, 10)}</b>
                 <br />
               </p>
               <hr style={{ margin: "5px" }} />
@@ -113,7 +116,7 @@ const InvoicePage = () => {
                     </td>
                   </tr>
 
-                  {selectedInv.products.map((item) => (
+                  {selectedInv?.products.map((item) => (
                     <>
                       <tr className="service">
                         <td className="tableitem">
@@ -133,7 +136,7 @@ const InvoicePage = () => {
                       <h2>tax</h2>
                     </td>
                     <td className="payment">
-                      <h2>${selectedInv.tax}</h2>
+                      <h2>${selectedInv?.tax}</h2>
                     </td>
                   </tr>
                   <tr className="tabletitle">
@@ -145,7 +148,7 @@ const InvoicePage = () => {
                     <td className="payment">
                       <h2>
                         {" "}
-                        <b>${selectedInv.grandTotal}</b>{" "}
+                        <b>${selectedInv?.grandTotal}</b>{" "}
                       </h2>
                     </td>
                   </tr>

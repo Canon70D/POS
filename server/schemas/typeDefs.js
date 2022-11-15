@@ -31,7 +31,7 @@ const typeDefs = gql`
     _id: ID
     purchaseDate: String
     customerName: String
-    customerNumber: String
+    customerNumber: Float
     paymentMode: String
     total: Float
     grandTotal: Float
@@ -42,6 +42,10 @@ const typeDefs = gql`
   type Auth {
     token: ID
     user: User
+  }
+
+  input ProductInput {
+    _id: ID!
   }
 
   type Query {
@@ -58,11 +62,11 @@ const typeDefs = gql`
 
   type Mutation {
     addProduct(
-      name: String!
-      price: Float!
-      stock: Int!
-      image: String
-      subcategory: ID
+      name: String!,
+      price: Float!,
+      stock: Int!,
+      image: String,
+      subcategory: ID,
     ): Product
     removeProduct(productId: ID!): Product
     updateProduct(_id: ID!, price: Float!, stock: Int!): Product
@@ -70,7 +74,15 @@ const typeDefs = gql`
     removeCategory(categoryId: ID!): Category
     addSubcategory(name: String!): Subcategory
     removeSubcategory(categoryId: ID!): Subcategory
-    addOrder(products: [ID]!): Order
+    addOrder(
+      customerName: String!,
+      customerNumber: Float!,
+      paymentMode: String!,
+      total: Float!,
+      grandTotal: Float!,
+      tax: Float!,
+      products: [ProductInput!]
+    ): Order
     login(employeeId: String!, password: String!): Auth
     addUser(name: String!, employeeId: String!, password: String!): Auth
   }
