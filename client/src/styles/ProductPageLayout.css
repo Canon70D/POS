@@ -14,11 +14,13 @@
   font-size: 12px;
 }
 
-.priceFormDiv, .stockFormDiv{
+.priceFormDiv,
+.stockFormDiv {
   margin-left: 10px;
 }
 
-.price, .stock {
+.price,
+.stock {
   display: flex;
   flex-flow: row;
   height: 40px;
@@ -33,18 +35,24 @@
   height: 40px;
 }
 
-.updateSearchButton{
+.updateSearchButton {
   float: right;
   margin-left: auto;
   margin-right: auto;
   width: 8em;
 }
 
-.updateTreeButton{
+.updateTreeButton {
   /* float: right; */
   margin-left: 10px;
 }
 
-.formDiv{
+.formDiv {
   display: flex;
+}
+
+#addProductModalButton {
+  margin: 0;
+  left: 50%;
+  margin-top: 10px;
 }

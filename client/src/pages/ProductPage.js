@@ -332,7 +332,11 @@ const ProductPage = () => {
       </Space>
 
       {/* a button and a pop modal for add new product, need to be fixed to useMusation to save data to db, need a function for form when onFinish */}
-      <Button type="primary" onClick={() => setPopupModal(true)}>
+      <Button 
+      type="primary" 
+      onClick={() => setPopupModal(true)}
+      id="addProductModalButton"
+      >
         Add Product
       </Button>
       <Modal
